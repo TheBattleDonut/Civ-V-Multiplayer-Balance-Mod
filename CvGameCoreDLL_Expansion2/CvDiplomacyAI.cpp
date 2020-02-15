@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -5271,6 +5271,21 @@ void CvDiplomacyAI::DoUpdatePeaceTreatyWillingness()
 						eTreatyWillingToAccept = PEACE_TREATY_WHITE_PEACE;
 					}
 				}
+
+#ifdef CVM_AI_NO_WAR_DECLARATION
+
+				if (GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION") && GET_PLAYER(eLoopPlayer).isHuman()) {
+					if (eTreatyWillingToOffer < PEACE_TREATY_WHITE_PEACE) {
+						eTreatyWillingToOffer = PEACE_TREATY_WHITE_PEACE;
+					}
+
+					if (eTreatyWillingToAccept != PEACE_TREATY_WHITE_PEACE) {
+						eTreatyWillingToAccept = PEACE_TREATY_WHITE_PEACE;
+					}
+				}
+
+#endif
+
 			}
 
 			SetTreatyWillingToOffer(eLoopPlayer, eTreatyWillingToOffer);
@@ -5285,6 +5300,15 @@ bool CvDiplomacyAI::IsWillingToMakePeaceWithHuman(PlayerTypes ePlayer)
 	CvPlayer& kHumanPlayer = GET_PLAYER(ePlayer);
 	if (kHumanPlayer.isHuman())
 	{
+
+#ifdef CVM_AI_NO_WAR_DECLARATION
+
+		if (GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION")) {
+			return true;
+		}
+
+#endif
+
 		bool bWillMakePeace = GetPlayerNumTurnsAtWar(ePlayer) >= 5;
 
 		if(!GET_TEAM(m_pPlayer->getTeam()).canChangeWarPeace(kHumanPlayer.getTeam()))
@@ -5577,6 +5601,15 @@ void CvDiplomacyAI::MakeWar()
 /// We've decided to declare war on someone
 void CvDiplomacyAI::DeclareWar(PlayerTypes ePlayer)
 {
+
+#ifdef CVM_AI_NO_WAR_DECLARATION
+
+	if (GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION") && GET_PLAYER(ePlayer).isHuman()) {
+		return;
+	}
+
+#endif
+
 	CvAssertMsg(!GET_PLAYER(ePlayer).isMinorCiv() || GET_PLAYER(ePlayer).GetMinorCivAI()->GetAlly() != GetPlayer()->GetID(), "Major is declaring war on a city-state it is allied with! Please send Jon this with your last 5 autosaves and what changelist # you're playing.");
 
 	CvTeam& kMyTeam = GET_TEAM(GetTeam());

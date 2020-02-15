@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -547,7 +547,20 @@ bool CvDealAI::IsDealWithHumanAcceptable(CvDeal* pDeal, PlayerTypes eOtherPlayer
 	// Peace deal where we're not surrendering, value must equal cached value
 	else if (pDeal->IsPeaceTreatyTrade(eOtherPlayer))
 	{
+#ifdef CVM_AI_NO_WAR_DECLARATION
+		int iPeaceValueRequired = GetCachedValueOfPeaceWithHuman();
+		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION")
+		   && iPeaceValueRequired > 0
+		   && GET_PLAYER(eOtherPlayer).isHuman()) {
+			   iPeaceValueRequired = 0;
+		   }
+
+		if (iTotalValueToMe >= iPeaceValueRequired)
+#else
+
 		if (iTotalValueToMe >= GetCachedValueOfPeaceWithHuman())
+
+#endif
 		{
 			return true;
 		}
