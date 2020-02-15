@@ -10,5 +10,6 @@
 // Ai changes
 #define CVM_AI_NO_WORLD_WONDERS
 #define CVM_AI_NO_BUILDING_SETTLERS
+#define CVM_AI_NO_MAKING_PROPHETS
 
 #endif

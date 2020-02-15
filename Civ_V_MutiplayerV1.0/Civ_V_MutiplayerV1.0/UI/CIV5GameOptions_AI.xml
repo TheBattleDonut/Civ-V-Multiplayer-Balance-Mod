@@ -12,6 +12,11 @@
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP</Help>
 		</Row>
+		<Row>
+			<Type>GAMEOPTION_AI_NO_MAKING_PROPHETS</Type>
+			<Description>TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS</Description>
+			<Help>TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP</Help>
+		</Row>
     </GameOptions>
     <Language_en_US>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -25,6 +30,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>AI players will never build units that can settle.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
 		</Row>
     </Language_en_US>
     <Language_DE_DE>
@@ -40,6 +51,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI players will never build units that can settle.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
+		</Row>
     </Language_DE_DE>
     <Language_ES_ES>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -53,6 +70,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI players will never build units that can settle.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
 		</Row>
     </Language_ES_ES>
     <Language_FR_FR>
@@ -68,6 +91,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI players will never build units that can settle.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
+		</Row>
     </Language_FR_FR>
     <Language_PL_PL>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -82,6 +111,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI players will never build units that can settle.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
+		</Row>
     </Language_PL_PL>
     <Language_RU_RU>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -95,6 +130,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP">
 			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI players will never build units that can settle.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI Cannot Make Prophets or Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI players cannot make missionaries and great prophets to spread their religion to cities owned by human players.</Text>
 		</Row>
     </Language_RU_RU>
 </GameData>

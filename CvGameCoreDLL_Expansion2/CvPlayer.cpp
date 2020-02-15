@@ -5967,6 +5967,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 
 	// Faith for pantheon
 	bool bPantheon = kGoodyInfo.isPantheonFaith();
+
 	if(bPantheon)
 	{
 		// Enough so still get a pantheon if 3 civs pop this in same turn
@@ -5979,6 +5980,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 
 	// Faith for percent of great prophet
 	int iProphetPercent = kGoodyInfo.getProphetPercent();
+
 	if(iProphetPercent > 0)
 	{
 		iFaith = GetReligions()->GetCostNextProphet(false /*bIncludeBeliefDiscounts*/, true /*bAdjustForSpeedDifficulty*/) * iProphetPercent / 100;
