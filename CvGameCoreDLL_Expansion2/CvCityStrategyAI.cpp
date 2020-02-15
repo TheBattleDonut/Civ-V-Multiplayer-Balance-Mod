@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -885,6 +885,15 @@ void CvCityStrategyAI::ChooseProduction(bool bUseAsyncRandom, BuildingTypes eIgn
 				}
 			}
 
+#ifdef CVM_AI_NO_WORLD_WONDERS
+
+			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && isWorldWonderClass(pkBuildingInfo->GetBuildingClassInfo())) {
+				iTempWeight = 0;
+				continue;
+			}
+
+#endif
+
 			// If the City is a puppet, it avoids Wonders (because the human can't change it if he wants to build it somewhere else!)
 			if(GetCity()->IsPuppet())
 			{
@@ -986,6 +995,15 @@ void CvCityStrategyAI::ChooseProduction(bool bUseAsyncRandom, BuildingTypes eIgn
 		// Loop through adding the available projects
 		for(iProjectLoop = 0; iProjectLoop < GC.GetGameProjects()->GetNumProjects(); iProjectLoop++)
 		{
+
+#ifdef CVM_AI_NO_WORLD_WONDERS
+
+			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && isWorldProject((ProjectTypes)iProcessLoop)) {
+				continue;
+			}
+
+#endif
+
 			if(m_pCity->canCreate((ProjectTypes)iProjectLoop))
 			{
 				buildable.m_eBuildableType = CITY_BUILDABLE_PROJECT;
@@ -999,7 +1017,7 @@ void CvCityStrategyAI::ChooseProduction(bool bUseAsyncRandom, BuildingTypes eIgn
 	// Normally, a puppeted city cannot run processes, but as Venice they are allowed to.
 	bool bIsVenice = kPlayer.GetPlayerTraits()->IsNoAnnexing();
 	if (!GetCity()->IsPuppet() || bIsVenice)
-	{	
+	{
 		// Loop through adding available processes
 		if (!GET_PLAYER(m_pCity->getOwner()).isMinorCiv())
 		{

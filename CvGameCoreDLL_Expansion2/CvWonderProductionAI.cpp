@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -245,6 +245,14 @@ BuildingTypes CvWonderProductionAI::ChooseWonder(bool bUseAsyncRandom, bool bAdj
 			CvBuildingEntry& kBuilding = *pkBuildingInfo;
 			const CvBuildingClassInfo& kBuildingClassInfo = kBuilding.GetBuildingClassInfo();
 
+#ifdef CVM_AI_NO_WORLD_WONDERS
+
+			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && isWorldWonderClass(kBuildingClassInfo)) {
+				continue;
+			}
+
+#endif
+
 			// Make sure this wonder can be built now
 			if(IsWonder(kBuilding) && HaveCityToBuild((BuildingTypes)iBldgLoop))
 			{
@@ -394,6 +402,15 @@ BuildingTypes CvWonderProductionAI::ChooseWonderForGreatEngineer(bool bUseAsyncR
 		if (pkBuildingInfo)
 		{
 			CvBuildingEntry& kBuilding = *pkBuildingInfo;
+
+#ifdef CVM_AI_NO_WORLD_WONDERS
+
+			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && isWorldWonderClass(kBuilding.GetBuildingClassInfo())) {
+				continue;
+			}
+
+#endif
+
 			// Make sure this wonder can be built now
 			if (IsWonder(kBuilding) && HaveCityToBuild((BuildingTypes)iBldgLoop))
 			{
