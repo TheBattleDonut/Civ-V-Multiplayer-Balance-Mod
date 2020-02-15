@@ -9,7 +9,7 @@
     <Stability>Alpha</Stability>
     <Teaser>A balance mod for the Civ V Multiplayer discord server</Teaser>
     <Description>A balance mod for the Civ V Multiplayer discord server</Description>
-    <Authors>Admin</Authors>
+    <Authors>TheBattleDonut</Authors>
     <SpecialThanks>
     </SpecialThanks>
     <AffectsSavedGames>true</AffectsSavedGames>
@@ -21,6 +21,13 @@
     <AssemblyName>Civ_V_MutiplayerV1.0</AssemblyName>
     <RootNamespace>Civ_V_MutiplayerV1.0</RootNamespace>
     <ModReferences />
+    <ModActions>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>ui/CIV5GameOptions_AI.xml</FileName>
+      </Action>
+    </ModActions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
     <OutputPath>.</OutputPath>
@@ -34,6 +41,10 @@
     <DeployMod>true</DeployMod>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="ui\CIV5GameOptions_AI.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>
