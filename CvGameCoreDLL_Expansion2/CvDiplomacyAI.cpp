@@ -12504,6 +12504,13 @@ void CvDiplomacyAI::DoContactMinorCivs()
 			// Able to give a gift?  Don't gift more than half of the gold we have in one turn
 			if(sGift.iGoldAmount > 0 && iGoldLeft >= (iGoldReserve / 2))
 			{
+
+#ifdef CVM_AI_NO_GOLD_GIFTS_CS
+				if (GC.getGame().isOption("GAMEOPTION_AI_NO_GOLD_GIFTS_CS")) {
+					continue;
+				}
+#endif
+
 				GET_PLAYER(sGift.eMinor).GetMinorCivAI()->DoGoldGiftFromMajor(GetPlayer()->GetID(), sGift.iGoldAmount); //antonjs: todo: go through CvGame instead?
 
 				LogMinorCivGiftGold(sGift.eMinor, iOldFriendship, sGift.iGoldAmount, /*bSaving*/ false, sGift.bQuickBoost, sGift.eMajorRival);
