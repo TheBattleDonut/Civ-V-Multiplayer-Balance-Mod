@@ -500,6 +500,19 @@ void CvDealAI::DoAcceptedDemand(PlayerTypes eFromPlayer, const CvDeal& kDeal)
 /// Will this AI accept pDeal? Handles deal from both human and AI players
 bool CvDealAI::IsDealWithHumanAcceptable(CvDeal* pDeal, PlayerTypes eOtherPlayer, int& iTotalValueToMe, int& iValueImOffering, int& iValueTheyreOffering, int& iAmountOverWeWillRequest, int& iAmountUnderWeWillOffer, bool& bCantMatchOffer)
 {
+
+#ifdef CVM_AI_ONLY_LUX_TRADES
+	if (GC.getGame().isOption("GAMEOPTION_AI_ONLY_LUX_TRADES")) {
+		TradedItemList::iterator it;
+		for (it = pDeal->m_TradedItems.begin(); it != pDeal->m_TradedItems.end(); ++it) {
+			ResourceUsageTypes eUsage = GC.getResourceInfo((ResourceTypes)it->m_iData1)->getResourceUsage();
+			if (eUsage != RESOURCEUSAGE_LUXURY) {
+				return false;
+			}
+		}
+	}
+#endif
+
 	CvAssertMsg(GET_PLAYER(eOtherPlayer).isHuman(), "DEAL_AI: Trying to see if AI will accept a deal with human player... but it's not human.  Please show Jon.");
 
 	int iPercentOverWeWillRequest;

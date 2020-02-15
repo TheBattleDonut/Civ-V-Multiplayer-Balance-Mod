@@ -27,6 +27,11 @@
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP</Help>
 		</Row>
+		<Row>
+			<Type>GAMEOPTION_AI_ONLY_LUX_TRADES</Type>
+			<Description>TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES</Description>
+			<Help>TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP</Help>
+		</Row>
     </GameOptions>
     <Language_en_US>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -58,6 +63,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>AI players won't give gold gifts to city states anymore.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>AI players will only trade 1 for 1 luxury trades.</Text>
 		</Row>
     </Language_en_US>
     <Language_DE_DE>
@@ -91,6 +102,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI players won't give gold gifts to city states anymore.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]AI players will only trade 1 for 1 luxury trades.</Text>
+		</Row>
     </Language_DE_DE>
     <Language_ES_ES>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -122,6 +139,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI players won't give gold gifts to city states anymore.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]AI players will only trade 1 for 1 luxury trades.</Text>
 		</Row>
     </Language_ES_ES>
     <Language_FR_FR>
@@ -155,6 +178,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI players won't give gold gifts to city states anymore.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]AI players will only trade 1 for 1 luxury trades.</Text>
+		</Row>
     </Language_FR_FR>
     <Language_PL_PL>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -187,6 +216,12 @@
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI players won't give gold gifts to city states anymore.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]AI players will only trade 1 for 1 luxury trades.</Text>
+		</Row>
     </Language_PL_PL>
     <Language_RU_RU>
         <Row Tag="TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER">
@@ -218,6 +253,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP">
 			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI players won't give gold gifts to city states anymore.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI Will Only Trade 1 For 1 Luxury Trades</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]AI players will only trade 1 for 1 luxury trades.</Text>
 		</Row>
     </Language_RU_RU>
 </GameData>
