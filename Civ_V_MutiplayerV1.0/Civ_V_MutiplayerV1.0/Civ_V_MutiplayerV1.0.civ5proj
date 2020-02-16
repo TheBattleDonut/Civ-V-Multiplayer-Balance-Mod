@@ -49,14 +49,16 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="UI\CIV5GameOptions_AI.xml">
+    <Content Include="ui\CIV5GameOptions_AI.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="Gameplay\CIV5GameOptions_Randomized_Activation.xml">
+      <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Gameplay\" />
     <Folder Include="ui\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
