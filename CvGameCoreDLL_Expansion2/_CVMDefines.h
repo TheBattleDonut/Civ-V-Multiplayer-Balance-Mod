@@ -18,5 +18,6 @@
 
 // Mechanical changes
 #define CVM_RANDOMIZE_TURN_ACTIVATION_ORDER
+#define CVM_NO_SHIFT_MOVE
 
 #endif

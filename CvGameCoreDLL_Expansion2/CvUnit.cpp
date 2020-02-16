@@ -1720,7 +1720,16 @@ bool CvUnit::isActionRecommended(int iAction)
 	{
 		if(gDLL->shiftKey())
 		{
+
+#ifdef CVM_NO_SHIFT_MOVE
+
+			// Don't set LastMissionPlot
+
+#else
+
 			pPlot = LastMissionPlot();
+
+#endif
 		}
 	}
 
