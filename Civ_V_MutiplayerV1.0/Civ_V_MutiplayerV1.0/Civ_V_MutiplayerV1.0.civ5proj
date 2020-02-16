@@ -27,6 +27,11 @@
         <Type>UpdateDatabase</Type>
         <FileName>ui/CIV5GameOptions_AI.xml</FileName>
       </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>gameplay/CIV5GameOptions_Randomized_Activation.xml</FileName>
+      </Action>
     </ModActions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
@@ -53,12 +58,12 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="Gameplay\CIV5GameOptions_Randomized_Activation.xml">
+    <Content Include="gameplay\CIV5GameOptions_Randomized_Activation.xml">
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\" />
+    <Folder Include="gameplay\" />
     <Folder Include="ui\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
