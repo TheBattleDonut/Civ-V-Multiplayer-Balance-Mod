@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -5515,7 +5515,17 @@ void CvLeague::AssignStartingVotes()
 {
 	for (MemberList::iterator it = m_vMembers.begin(); it != m_vMembers.end(); it++)
 	{
+
+#ifdef CVM_AI_NO_VOTES
+		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+		   && GET_PLAYER(it->ePlayer).isHuman()
+		   && GC.getGame().isGameMultiPlayer()
+		   && CanEverVote(it->ePlayer))
+#else
+
 		if (CanEverVote(it->ePlayer))
+
+#endif
 		{
 			it->iVotes = CalculateStartingVotesForMember(it->ePlayer, /*bForceUpdateSources*/ true);
 			it->iAbstainedVotes = 0;
@@ -5537,7 +5547,19 @@ void CvLeague::AssignProposalPrivileges()
 	CvWeightedVector<Member*, MAX_CIV_PLAYERS, false> vpPossibleProposers;
 	for (MemberList::iterator it = m_vMembers.begin(); it != m_vMembers.end(); it++)
 	{
+#ifdef CVM_AI_NO_VOTES
+
+		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+		   && GET_PLAYER(it->ePlayer).isHuman()
+		   && GC.getGame().isGameMultiPlayer()
+		   && CanEverPropose(it->ePlayer))
+
+
+#else
+
 		if (CanEverPropose(it->ePlayer))
+
+#endif
 		{
 			int iVotes = CalculateStartingVotesForMember(it->ePlayer);
 			vpPossibleProposers.push_back(it, iVotes);
@@ -7448,6 +7470,17 @@ void CvLeagueAI::DoTurn()
 
 void CvLeagueAI::DoVotes(CvLeague* pLeague)
 {
+
+#ifdef CVM_AI_NO_VOTES
+
+	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+	   && !m_pPlayer->isHuman()
+	   && GC.getGame().isGameMultiPlayer()) {
+		return;
+	}
+
+#endif
+
 	AI_PERF_FORMAT("AI-perf.csv", ("CvLeagueAI::DoVotes, Turn %03d, %s", GC.getGame().getElapsedGameTurns(), GetPlayer()->getCivilizationShortDescription()) );
 
 	int iAttempts = 0;
@@ -7472,6 +7505,17 @@ void CvLeagueAI::DoAbstainAllVotes(CvLeague* pLeague)
 
 void CvLeagueAI::DoProposals(CvLeague* pLeague)
 {
+
+#ifdef CVM_AI_NO_VOTES
+
+	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+	   && !m_pPlayer->isHuman()
+	   && GC.getGame().isGameMultiPlayer()) {
+		return;
+	}
+
+#endif
+
 	int iAttempts = 0;
 	while (pLeague->CanPropose(GetPlayer()->GetID()))
 	{

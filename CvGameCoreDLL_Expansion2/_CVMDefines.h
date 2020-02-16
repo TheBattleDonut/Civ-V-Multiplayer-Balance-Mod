@@ -14,5 +14,6 @@
 #define CVM_AI_NO_WAR_DECLARATION
 #define CVM_AI_NO_GOLD_GIFTS_CS
 #define CVM_AI_ONLY_LUX_TRADES
+#define CVM_AI_NO_VOTES
 
 #endif
