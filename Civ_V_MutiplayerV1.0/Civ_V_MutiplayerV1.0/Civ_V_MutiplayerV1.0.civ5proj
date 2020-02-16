@@ -41,10 +41,21 @@
     <DeployMod>true</DeployMod>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="CvGameCore_Expansion2.dll">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CvGameCore_Expansion2.pdb">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="ui\CIV5GameOptions_AI.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ui\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>
