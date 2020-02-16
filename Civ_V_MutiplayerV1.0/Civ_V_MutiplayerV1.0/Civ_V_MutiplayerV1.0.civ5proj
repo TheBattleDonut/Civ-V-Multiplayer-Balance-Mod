@@ -49,9 +49,11 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="ui\CIV5GameOptions_AI.xml">
+    <Content Include="UI\CIV5GameOptions_AI.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Gameplay\CIV5GameOptions_Randomized_Activation.xml">
     </Content>
   </ItemGroup>
   <ItemGroup>
