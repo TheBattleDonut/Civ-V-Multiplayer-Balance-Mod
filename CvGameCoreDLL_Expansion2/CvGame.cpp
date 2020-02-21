@@ -8387,14 +8387,14 @@ void CvGame::updateMoves()
 
 			for (int iJ = 0; iJ < MAX_PLAYERS; iJ++) {
 				iI = aiShuffle[iJ];
-			}
+
 
 #else
 
-			for(iI = 0; iI < MAX_PLAYERS; iI++)
+			for(iI = 0; iI < MAX_PLAYERS; iI++) {
 
 #endif
-			{
+
 				CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
 				if(!player.isTurnActive() && player.isHuman() && player.isAlive() && player.isSimultaneousTurns())
 				{
