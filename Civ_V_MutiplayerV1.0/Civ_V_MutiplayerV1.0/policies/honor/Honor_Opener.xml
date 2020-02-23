@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/24/2020 12:06:52 AM -->
+<GameData>
+
+	<!-- HONOR OPENER -->
+	<Policies>
+		<Update>
+			<Set CultureFromKills="100" CultureFromBarbarianKills="0" />
+			<Where Type="POLICY_HONOR" />
+		</Update>
+	</Policies>
+  
+</GameData>

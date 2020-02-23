@@ -37,6 +37,11 @@
         <Type>UpdateDatabase</Type>
         <FileName>buildings/Stoneworks.xml</FileName>
       </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>policies/honor/Honor_Opener.xml</FileName>
+      </Action>
     </ModActions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
@@ -59,6 +64,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="policies\honor\Honor_Opener.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="ui\CIV5GameOptions_AI.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
@@ -70,6 +79,8 @@
   <ItemGroup>
     <Folder Include="gameplay\" />
     <Folder Include="buildings" />
+    <Folder Include="policies" />
+    <Folder Include="policies\honor" />
     <Folder Include="ui\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
