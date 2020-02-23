@@ -2545,13 +2545,7 @@ void CvGame::selectionListGameNetMessage(int eMessage, int iData2, int iData3, i
 				}
 				else
 				{
-#ifdef CVM_NO_SHIFT_MOVE
-					// don't send auto mission
-#else
-
 					gDLL->sendAutoMission(pkSelectedUnit->GetID());
-
-#endif
 				}
 			}
 			else if((eMessage == GAMEMESSAGE_SWAP_UNITS))
@@ -2878,14 +2872,7 @@ bool CvGame::selectionListIgnoreBuildingDefense()
 bool CvGame::canHandleAction(int iAction, CvPlot* pPlot, bool bTestVisible)
 {
 	CvPlot* pMissionPlot;
-
-#ifdef CVM_NO_SHIFT_MOVE
-	// don't initialize Shift key pressed boolean flag
-#else
-
 	bool bShift = gDLL->shiftKey();
-
-#endif
 
 	CvActionInfo* pActionInfo = GC.getActionInfo(iAction);
 	CvAssert(pActionInfo != NULL);
@@ -2919,16 +2906,10 @@ bool CvGame::canHandleAction(int iAction, CvPlot* pPlot, bool bTestVisible)
 					{
 						pMissionPlot = pPlot;
 					}
-#ifdef CVM_NO_SHIFT_MOVE
-						// Don't set LastMissionPlot
-#else
-
 					else if(bShift)
 					{
 						pMissionPlot = pkHeadSelectedUnit->LastMissionPlot();
 					}
-
-#endif
 					else
 					{
 						pMissionPlot = NULL;

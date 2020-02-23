@@ -1720,16 +1720,7 @@ bool CvUnit::isActionRecommended(int iAction)
 	{
 		if(gDLL->shiftKey())
 		{
-
-#ifdef CVM_NO_SHIFT_MOVE
-
-			// Don't set LastMissionPlot
-
-#else
-
 			pPlot = LastMissionPlot();
-
-#endif
 		}
 	}
 
@@ -19577,6 +19568,15 @@ bool CvUnit::CanDoInterfaceMode(InterfaceModeTypes eInterfaceMode, bool bTestVis
 /// Queue up a new mission
 void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, CvPlot* pMissionAIPlot, CvUnit* pMissionAIUnit)
 {
+
+#ifdef CVM_NO_SHIFT_MOVE
+
+	if (gDLL->shiftKey()) {
+		return;
+	}
+
+#endif
+
 	VALIDATE_OBJECT
 	CvUnitMission::PushMission(this, eMission, iData1, iData2, iFlags, bAppend, bManual, eMissionAI, pMissionAIPlot, pMissionAIUnit);
 }
