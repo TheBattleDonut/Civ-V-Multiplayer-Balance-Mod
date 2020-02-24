@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/24/2020 11:24:22 PM -->
+<GameData>
+
+	<!-- Removed Scholars in Residence -->
+	<Resolutions>
+		<Delete Type="RESOLUTION_MEMBER_DISCOVERED_TECH_DISCOUNT" />
+	</Resolutions>
+</GameData>

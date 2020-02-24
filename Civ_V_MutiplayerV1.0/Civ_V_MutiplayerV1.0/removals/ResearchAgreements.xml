@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/24/2020 11:26:22 PM -->
+<GameData>
+
+  <!-- Remove Research Agreements -->
+	<Technologies>
+		<Update>
+			<Set ResearchAgreementTradingAllowed="false" />
+			<Where Type="TECH_EDUCATION" />
+		</Update>
+	</Technologies>
+	<Language_en_US>
+		<Delete Tag="TXT_KEY_DIPLO_RESCH_AGREEMENT_NO_TECH" />
+		<Row Tag="TXT_KEY_DIPLO_RESCH_AGREEMENT_NO_TECH">
+			<Text>[NEWLINE][NEWLINE]Research Agreements are disabled.</Text>
+		</Row>
+	</Language_en_US>
+</GameData>

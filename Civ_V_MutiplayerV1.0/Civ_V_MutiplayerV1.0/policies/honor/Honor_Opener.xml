@@ -31,7 +31,7 @@
 	<!-- HONOR OPENER -->
 	<Policies>
 		<Update>
-			<Set CultureFromKills="100" CultureFromBarbarianKills="0" />
+			<Set CultureFromKills="100" CultureFromBarbarianKills="0" AlwaysSeeBarbCamps="false" />
 			<Where Type="POLICY_HONOR" />
 		</Update>
 	</Policies>

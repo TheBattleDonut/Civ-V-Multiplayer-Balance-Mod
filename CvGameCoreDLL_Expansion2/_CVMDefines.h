@@ -20,4 +20,7 @@
 #define CVM_RANDOMIZE_TURN_ACTIVATION_ORDER
 #define CVM_NO_SHIFT_MOVE
 
+// Removals
+#define CVM_BAN_OBSERVATORIES
+
 #endif
