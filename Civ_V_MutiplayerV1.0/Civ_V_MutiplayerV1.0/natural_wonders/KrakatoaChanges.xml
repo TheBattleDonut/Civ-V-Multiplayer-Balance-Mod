@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/25/2020 10:05:55 PM -->
+<GameData>
+
+  <!-- Fix spawn location -->
+	<Natural_Wonder_Placement>
+		<Update>
+			<Where NaturalWonderType="FEATURE_VOLCANO"/>
+			<Set AdjacentTilesCareAboutTerrainTypes="true"
+			RequiredNumberOfAdjacentShallowWater ="4"
+			CoreTileCanBeAnyTerrainType="false"
+			CoreTileCanBeShallowWater="true"/>
+		</Update>
+	</Natural_Wonder_Placement>
+</GameData>

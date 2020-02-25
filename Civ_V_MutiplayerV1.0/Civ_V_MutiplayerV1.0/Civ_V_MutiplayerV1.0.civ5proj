@@ -77,6 +77,11 @@
         <Type>UpdateDatabase</Type>
         <FileName>removals/BanObservatories.xml</FileName>
       </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>natural_wonders/KrakatoaChanges.xml</FileName>
+      </Action>
     </ModActions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
@@ -98,6 +103,10 @@
     <Content Include="CvGameCore_Expansion2.dll">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="natural_wonders\KrakatoaChanges.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="policies\honor\Honor_Opener.xml">
       <SubType>Lua</SubType>
@@ -142,6 +151,7 @@
   <ItemGroup>
     <Folder Include="gameplay\" />
     <Folder Include="buildings" />
+    <Folder Include="natural_wonders" />
     <Folder Include="removals" />
     <Folder Include="policies" />
     <Folder Include="policies\honor" />
