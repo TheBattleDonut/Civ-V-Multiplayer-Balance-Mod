@@ -108,6 +108,18 @@ DealOfferResponseTypes CvDealAI::DoHumanOfferDealToThisAI(CvDeal* pDeal)
 	bool bCantMatchOffer;
 	bool bDealAcceptable = IsDealWithHumanAcceptable(pDeal, eFromPlayer, /*Passed by reference*/ iDealValueToMe, iValueImOffering, iValueTheyreOffering, iAmountOverWeWillRequest, iAmountUnderWeWillOffer, bCantMatchOffer);
 
+#ifdef CVM_AI_ONLY_LUX_TRADES
+
+	if (!GC.getGame().isOption("GAMEOPTION_AI_ONLY_LUX_TRADES")) {
+		if (!bDealAcceptable) {
+			if (!pDeal->IsPeaceTreatyTrade(eFromPlayer) && iValueTheyreOffering > iValueImOffering) {
+				bDealAcceptable = true;
+			}
+		}
+	}
+
+#else
+
 	// If they're actually giving us more than we're asking for (e.g. a gift) then accept the deal
 	if(!bDealAcceptable)
 	{
@@ -116,6 +128,8 @@ DealOfferResponseTypes CvDealAI::DoHumanOfferDealToThisAI(CvDeal* pDeal)
 			bDealAcceptable = true;
 		}
 	}
+
+#endif
 
 	if(bDealAcceptable)
 	{
@@ -505,8 +519,12 @@ bool CvDealAI::IsDealWithHumanAcceptable(CvDeal* pDeal, PlayerTypes eOtherPlayer
 	if (GC.getGame().isOption("GAMEOPTION_AI_ONLY_LUX_TRADES")) {
 		TradedItemList::iterator it;
 		for (it = pDeal->m_TradedItems.begin(); it != pDeal->m_TradedItems.end(); ++it) {
-			ResourceUsageTypes eUsage = GC.getResourceInfo((ResourceTypes)it->m_iData1)->getResourceUsage();
-			if (eUsage != RESOURCEUSAGE_LUXURY) {
+			if (it->m_eItemType == TRADE_ITEM_RESOURCES) {
+				ResourceUsageTypes eUsage = GC.getResourceInfo((ResourceTypes)it->m_iData1)->getResourceUsage();
+				if (eUsage != RESOURCEUSAGE_LUXURY) {
+					return false;
+				}
+			} else {
 				return false;
 			}
 		}
