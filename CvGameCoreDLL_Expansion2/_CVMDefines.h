@@ -24,4 +24,7 @@
 // Removals
 #define CVM_BAN_OBSERVATORIES
 
+// Civ changes
+#define CVM_IROQUOIS_UA_FIX // Fix Iroquois movement from forest to road
+
 #endif
