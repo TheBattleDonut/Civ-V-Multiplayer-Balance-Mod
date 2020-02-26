@@ -25,7 +25,7 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>removals/RemoveBlitzFromParadrops.xml</FileName>
+        <FileName>removals/RemoveBlitzFromParadrops.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
@@ -104,6 +104,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CvGameCore_Expansion2.pdb">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="natural_wonders\KrakatoaChanges.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
@@ -124,7 +128,7 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="removals\RemoveBlitzFromParadrops.xml">
+    <Content Include="removals\RemoveBlitzFromParadrops.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
