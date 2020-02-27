@@ -183,6 +183,9 @@ CvPlayer::CvPlayer() :
 	, m_iGreatWritersCreated(0)
 	, m_iGreatArtistsCreated(0)
 	, m_iGreatMusiciansCreated(0)
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+	, m_iGreatProphetsCreated(0)
+#endif
 	, m_iMerchantsFromFaith(0)
 	, m_iScientistsFromFaith(0)
 	, m_iWritersFromFaith(0)
@@ -788,6 +791,9 @@ void CvPlayer::uninit()
 	m_iGreatWritersCreated = 0;
 	m_iGreatArtistsCreated = 0;
 	m_iGreatMusiciansCreated = 0;
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+	m_iGreatProphetsCreated = 0;
+#endif
 	m_iMerchantsFromFaith = 0;
 	m_iScientistsFromFaith = 0;
 	m_iWritersFromFaith = 0;
@@ -12640,6 +12646,18 @@ void CvPlayer::incrementGreatMusiciansCreated()
 	m_iGreatMusiciansCreated++;
 }
 
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+//	--------------------------------------------------------------------------------
+int CvPlayer::getGreatProphetsCreated() const {
+	return m_iGreatProphetsCreated;
+}
+
+//	--------------------------------------------------------------------------------
+void CvPlayer::incrementGreatProphetsCreated() {
+	m_iGreatProphetsCreated++;
+}
+#endif
+
 //	--------------------------------------------------------------------------------
 int CvPlayer::getMerchantsFromFaith() const
 {
@@ -21434,12 +21452,24 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 								{
 									if(pNewUnit->IsGreatGeneral())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatGeneralsCreated();
+										}
+#else
 										incrementGreatGeneralsCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
 									else if(pNewUnit->IsGreatAdmiral())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatAdmiralsCreated();
+										}
+#else
 										incrementGreatAdmiralsCreated();
+#endif
 										CvPlot *pSpawnPlot = GetGreatAdmiralSpawnPlot(pNewUnit);
 										if (pNewUnit->plot() != pSpawnPlot)
 										{
@@ -21460,7 +21490,13 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 									}
 									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_WRITER"))
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatWritersCreated();
+										}
+#else
 										incrementGreatWritersCreated();
+#endif
 
 										if (pNewUnit->getUnitInfo().GetOneShotTourism() > 0)
 										{
@@ -21468,20 +21504,50 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 										}
 
 										pNewUnit->jumpToNearestValidPlot();
-									}							
+									}
 									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_ARTIST"))
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatArtistsCreated();
+										}
+#else
 										incrementGreatArtistsCreated();
-										pNewUnit->jumpToNearestValidPlot();
-									}							
-									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_MUSICIAN"))
-									{
-										incrementGreatMusiciansCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
+									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_MUSICIAN"))
+									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatMusiciansCreated();
+										}
+#else
+										incrementGreatMusiciansCreated();
+#endif
+										pNewUnit->jumpToNearestValidPlot();
+									}
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+									else if(pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_PROPHET")) {
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatProphetsCreated();
+										}
+#else
+										incrementGreatProphetsCreated();
+#endif
+										pNewUnit->jumpToNearestValidPlot();
+									}
+#endif
 									else if(pNewUnit->IsGreatPerson())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatPeopleCreated();
+										}
+#else
 										incrementGreatPeopleCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
 									else
@@ -21850,6 +21916,9 @@ void CvPlayer::Read(FDataStream& kStream)
 	kStream >> m_iGreatWritersCreated;
 	kStream >> m_iGreatArtistsCreated;
 	kStream >> m_iGreatMusiciansCreated;
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+	kStream >> m_iGreatProphetsCreated;
+#endif
 	kStream >> m_iMerchantsFromFaith;
 	kStream >> m_iScientistsFromFaith;
 	kStream >> m_iWritersFromFaith;
@@ -22389,6 +22458,9 @@ void CvPlayer::Write(FDataStream& kStream) const
 	kStream << m_iGreatWritersCreated;
 	kStream << m_iGreatArtistsCreated;
 	kStream << m_iGreatMusiciansCreated;
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+	kStream << m_iGreatProphetsCreated;
+#endif
 	kStream << m_iMerchantsFromFaith;
 	kStream << m_iScientistsFromFaith;
 	kStream << m_iWritersFromFaith;

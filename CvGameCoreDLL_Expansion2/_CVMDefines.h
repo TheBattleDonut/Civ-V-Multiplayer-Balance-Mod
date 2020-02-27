@@ -24,6 +24,10 @@
 // Removals
 #define CVM_BAN_OBSERVATORIES
 
+// Policy changes
+#define CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+#define CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+
 // Civ changes
 #define CVM_IROQUOIS_UA_FIX // Fix Iroquois movement from forest to road
 
