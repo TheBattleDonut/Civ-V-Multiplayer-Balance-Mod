@@ -86,6 +86,7 @@ CvGameInitialItemsOverrides::CvGameInitialItemsOverrides()
 //------------------------------------------------------------------------------
 CvGame::CvGame() :
 	m_jonRand(false)
+	, F11Down(false)
 	, m_endTurnTimer()
 	, m_endTurnTimerSemaphore(0)
 	, m_curTurnTimer()
@@ -1839,7 +1840,7 @@ void CvGame::updateSelectionList()
 int s_unitMoveTurnSlice = 0;
 
 bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
-{//gameLoopUpdate - Indicates that we're updating the turn timer for the game loop update.  
+{//gameLoopUpdate - Indicates that we're updating the turn timer for the game loop update.
  //					This forces the active player's turn to finish if her turn time has elapsed.
  //					We also reset the turn timer when ai processing is occurring.
  //					If false, we're simply querying the game for a player's turn timer status.
@@ -1850,13 +1851,22 @@ bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
 		ICvUserInterface2* iface = GC.GetEngineUserInterface();
 		if(getElapsedGameTurns() > 0)
 		{
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+			if(  isLocalPlayer
+			  && ((!gDLL->allAICivsProcessedThisTurn() && allUnitAIProcessed())
+			     || (F11Down && playerID == 0)))
+#else
 			if(isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()))
+#endif
 			{//the turn timer doesn't doesn't start until all ai processing has been completed for this game turn.
 				resetTurnTimer(true);
 
 				//hold the turn timer at 0 seconds with 0% completion
 				CvPreGame::setEndTurnTimerLength(0.0f);
 				iface->updateEndTurnTimer(0.0f);
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+				F11Down = false;
+#endif
 			}
 			else
 			{//turn timer is actively ticking.
@@ -2965,6 +2975,13 @@ void CvGame::handleAction(int iAction)
 
 	// Control
 	CvActionInfo* pkActionInfo = GC.getActionInfo(iAction);
+
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+	if (pkActionInfo->getControlType() == 27) {
+		F11Down = true;
+	}
+#endif
+
 	if(pkActionInfo->getControlType() != NO_CONTROL)
 	{
 		doControl((ControlTypes)(pkActionInfo->getControlType()));

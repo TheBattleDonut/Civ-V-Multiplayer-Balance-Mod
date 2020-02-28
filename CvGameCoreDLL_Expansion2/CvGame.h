@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -581,7 +581,6 @@ private:
 	const static unsigned int ms_aiSizes[10];
 
 protected:
-
 	int m_iEndTurnMessagesSent;
 	int m_iElapsedGameTurns;
 	int m_iStartTurn;
@@ -692,6 +691,10 @@ protected:
 
 	CvRandom m_mapRand;
 	CvRandom m_jonRand;
+
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+	bool F11Down;
+#endif
 
 	typedef std::vector<CvReplayMessage> ReplayMessageList;
 	ReplayMessageList m_listReplayMessages;
