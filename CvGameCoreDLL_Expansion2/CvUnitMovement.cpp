@@ -102,6 +102,7 @@ void CvUnitMovement::GetCostsForMove(const CvUnit* pUnit, const CvPlot* pFromPlo
 		   && (eFeature == FEATURE_FOREST || eFeature == FEATURE_JUNGLE)
 		   && pTraits->IsMoveFriendlyWoodsAsRoad()
 		   && !pFromPlot->isValidRoute(pUnit)
+		   && !(eFromFeature == FEATURE_FOREST || eFromFeature == FEATURE_JUNGLE)
 		   && !bRiverCrossing) {
 
 		CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);

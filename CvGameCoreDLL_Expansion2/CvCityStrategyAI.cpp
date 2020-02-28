@@ -998,7 +998,7 @@ void CvCityStrategyAI::ChooseProduction(bool bUseAsyncRandom, BuildingTypes eIgn
 
 #ifdef CVM_AI_NO_WORLD_WONDERS
 
-			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && isWorldProject((ProjectTypes)iProcessLoop)) {
+			if (GC.getGame().isOption("GAMEOPTION_AI_NO_WORLD_WONDER") && (isWorldProject((ProjectTypes)iProcessLoop) || isTeamProject((ProjectTypes)iProcessLoop))) {
 				continue;
 			}
 
