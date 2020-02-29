@@ -2472,11 +2472,6 @@ void CvCityCitizens::DoSpawnGreatPerson(UnitTypes eUnit, bool bIncrementCount, b
 		{
 			kPlayer.incrementGreatMusiciansCreated();
 		}
-#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
-		else if (newUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_PROPHET")) {
-			kPlayer.incrementGreatProphetsCreated();
-		}
-#endif
 		else
 		{
 			kPlayer.incrementGreatPeopleCreated();

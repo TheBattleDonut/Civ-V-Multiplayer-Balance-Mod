@@ -2288,6 +2288,14 @@ int CvPlayerReligions::GetNumProphetsSpawned() const
 	return m_iNumProphetsSpawned;
 }
 
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+
+void CvPlayerReligions::incrementNumProphetsSpawned() {
+	m_iNumProphetsSpawned++;
+}
+
+#endif
+
 /// Change count of prophets spawned
 void CvPlayerReligions::ChangeNumProphetsSpawned(int iValue)
 {

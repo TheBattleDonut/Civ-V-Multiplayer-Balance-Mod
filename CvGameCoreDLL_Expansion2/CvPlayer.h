@@ -607,10 +607,6 @@ public:
 	void incrementGreatArtistsCreated();
 	int getGreatMusiciansCreated() const;
 	void incrementGreatMusiciansCreated();
-#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
-	int getGreatProphetsCreated() const;
-	void incrementGreatProphetsCreated();
-#endif
 
 	int getMerchantsFromFaith() const;
 	void incrementMerchantsFromFaith();
@@ -1621,9 +1617,6 @@ protected:
 	int m_iGreatWritersCreated;
 	int m_iGreatArtistsCreated;
 	int m_iGreatMusiciansCreated;
-#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
-	int m_iGreatProphetsCreated;
-#endif
 	int m_iMerchantsFromFaith;
 	int m_iScientistsFromFaith;
 	int m_iWritersFromFaith;
