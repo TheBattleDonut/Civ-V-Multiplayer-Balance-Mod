@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/24/2020 11:50:32 PM -->
+<GameData>
+
+  <!-- Museum theming changes-->
+  <Building_ThemingBonuses>
+		<Delete BuildingType="BUILDING_MUSEUM"/>
+		<Row>
+			<BuildingType>BUILDING_MUSEUM</BuildingType>
+			<Description>TXT_KEY_THEMING_BONUS_MUSEUM_1</Description>
+			<Bonus>2</Bonus>
+			<AIPriority>2</AIPriority>
+			<SameEra>1</SameEra>
+			<MustBeArt>1</MustBeArt>
+		</Row>
+			<Row>
+			<BuildingType>BUILDING_MUSEUM</BuildingType>
+			<Description>TXT_KEY_THEMING_BONUS_MUSEUM_2</Description>
+			<Bonus>2</Bonus>
+			<AIPriority>2</AIPriority>
+			<SameEra>1</SameEra>
+			<MustBeArtifact>1</MustBeArtifact>
+		</Row>
+		<Row>
+			<BuildingType>BUILDING_MUSEUM</BuildingType>
+			<Description>TXT_KEY_THEMING_BONUS_MUSEUM_3</Description>
+			<Bonus>2</Bonus>
+			<AIPriority>2</AIPriority>
+			<MustBeArt>1</MustBeArt>
+		</Row>
+			<Row>
+			<BuildingType>BUILDING_MUSEUM</BuildingType>
+			<Description>TXT_KEY_THEMING_BONUS_MUSEUM_4</Description>
+			<Bonus>1</Bonus>
+			<AIPriority>1</AIPriority>
+			<MustBeArtifact>1</MustBeArtifact>
+		</Row>
+		<Row>
+			<BuildingType>BUILDING_MUSEUM</BuildingType>
+			<Description>TXT_KEY_THEMING_BONUS_MUSEUM_5</Description>
+			<Bonus>1</Bonus>
+			<AIPriority>1</AIPriority>
+			<SameEra>1</SameEra>
+		</Row>
+	</Building_ThemingBonuses>
+
+  <Language_en_US>
+		<Delete Tag="TXT_KEY_THEMING_BONUS_MUSEUM_1"/>
+		<Row Tag="TXT_KEY_THEMING_BONUS_MUSEUM_1">
+			<Text>Museum of {1_EraAdjective} Art</Text>
+		</Row>
+		<Delete Tag="TXT_KEY_THEMING_BONUS_MUSEUM_2"/>
+		<Row Tag="TXT_KEY_THEMING_BONUS_MUSEUM_2">
+			<Text>Museum of {1_EraAdjective} Warfare</Text>
+		</Row>
+		<Delete Tag="TXT_KEY_THEMING_BONUS_MUSEUM_3"/>
+		<Row Tag="TXT_KEY_THEMING_BONUS_MUSEUM_3">
+			<Text>Museum of Art</Text>
+		</Row>
+		<Delete Tag="TXT_KEY_THEMING_BONUS_MUSEUM_4"/>
+		<Row Tag="TXT_KEY_THEMING_BONUS_MUSEUM_4">
+			<Text>Museum of Warfare</Text>
+		</Row>
+		<Delete Tag="TXT_KEY_THEMING_BONUS_MUSEUM_5"/>
+		<Row Tag="TXT_KEY_THEMING_BONUS_MUSEUM_5">
+			<Text>Museum of {1_EraAdjective}</Text>
+		</Row>
+	</Language_en_US>
+
+  <!-- OXFORD UNIVERSITY -->
+	<Building_ThemingBonuses>
+		<Update>
+			<Set RequiresAnyButOwner="false" />
+			<Where BuildingType="BUILDING_OXFORD_UNIVERSITY" />
+		</Update>
+	</Building_ThemingBonuses>
+	<Language_en_US>
+		<Delete Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP">
+			<Text>To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_en_US>
+	<Language_DE_DE>
+		<Delete Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_DE_DE>
+	<Language_PL_PL>
+		<Delete Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_PL_PL>
+	<Language_RU_RU>
+		<Delete Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_OXFORD_UNIVERSITY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_RU_RU>
+
+
+	<!-- HERMITAGE -->
+	<Building_ThemingBonuses>
+		<Update>
+			<Set RequiresUniquePlayers="false" />
+			<Where BuildingType="BUILDING_HERMITAGE" />
+		</Update>
+	</Building_ThemingBonuses>
+	<Language_en_US>
+		<Delete Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP">
+			<Text>To maximize your bonus, make sure the Great Work Slots are all filled with Art from different Eras.</Text>
+		</Row>
+	</Language_en_US>
+	<Language_DE_DE>
+		<Delete Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Art from different Eras.</Text>
+		</Row>
+	</Language_DE_DE>
+	<Language_PL_PL>
+		<Delete Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Art from different Eras.</Text>
+		</Row>
+	</Language_PL_PL>
+	<Language_RU_RU>
+		<Delete Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_HERMITAGE_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Art from different Eras.</Text>
+		</Row>
+	</Language_RU_RU>
+
+
+	<!-- GREAT LIBRARY -->
+	<Building_ThemingBonuses>
+		<Update>
+			<Set RequiresUniquePlayers="false" />
+			<Where BuildingType="BUILDING_GREAT_LIBRARY" />
+		</Update>
+	</Building_ThemingBonuses>
+	<Language_en_US>
+		<Delete Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP">
+			<Text>To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_en_US>
+	<Language_DE_DE>
+		<Delete Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_DE_DE>
+	<Language_PL_PL>
+		<Delete Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_PL_PL>
+	<Language_RU_RU>
+		<Delete Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_GREAT_LIBRARY_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are all filled with Writings from different Eras.</Text>
+		</Row>
+	</Language_RU_RU>
+
+
+	<!-- LOUVRE -->
+	<Building_ThemingBonuses>
+		<Update>
+			<Set RequiresUniquePlayers="false" />
+			<Where BuildingType="BUILDING_LOUVRE" />
+		</Update>
+	</Building_ThemingBonuses>
+	<Language_en_US>
+		<Delete Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP">
+			<Text>To maximize your bonus, make sure the Great Work Slots are filled with 2 Great Works of Art and 2 Artifacts with all 4 being from different Eras.</Text>
+		</Row>
+	</Language_en_US>
+	<Language_DE_DE>
+		<Delete Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are filled with 2 Great Works of Art and 2 Artifacts with all 4 being from different Eras.</Text>
+		</Row>
+	</Language_DE_DE>
+	<Language_PL_PL>
+		<Delete Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP" />
+		<Row Tag="TXT_KEY_LOUVRE_THEMING_BONUS_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are filled with 2 Great Works of Art and 2 Artifacts with all 4 being from different Eras.</Text>
+		</Row>
+	</Language_PL_PL>
+	<Language_RU_RU>
+		<Delete Tag="TXT_KEY_BUILDING_STONE_WORKS_HELP" />
+		<Row Tag="TXT_KEY_BUILDING_STONE_WORKS_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]To maximize your bonus, make sure the Great Work Slots are filled with 2 Great Works of Art and 2 Artifacts with all 4 being from different Eras.</Text>
+		</Row>
+	</Language_RU_RU>
+</GameData>

@@ -19,6 +19,13 @@ void CvUnitMovement::GetCostsForMove(const CvUnit* pUnit, const CvPlot* pFromPlo
 	int iMoveDenominator = GC.getMOVE_DENOMINATOR();
 	bool bRiverCrossing = pFromPlot->isRiverCrossing(directionXY(pFromPlot, pToPlot));
 	FeatureTypes eFeature = pToPlot->getFeatureType();
+
+#ifdef CVM_IROQUOIS_UA_FIX
+
+	FeatureTypes eFromFeature = pFromPlot->getFeatureType();
+
+#endif
+
 	CvFeatureInfo* pFeatureInfo = (eFeature > NO_FEATURE) ? GC.getFeatureInfo(eFeature) : 0;
 	TerrainTypes eTerrain = pToPlot->getTerrainType();
 	CvTerrainInfo* pTerrainInfo = (eTerrain > NO_TERRAIN) ? GC.getTerrainInfo(eTerrain) : 0;
@@ -88,12 +95,69 @@ void CvUnitMovement::GetCostsForMove(const CvUnit* pUnit, const CvPlot* pFromPlo
 		iRouteCost = std::max(iFromMovementCost + kUnitTeam.getRouteChange(pFromPlot->getRouteType()), iMovementCost + kUnitTeam.getRouteChange(pToPlot->getRouteType()));
 		iRouteFlatCost = std::max(iFromFlatMovementCost * iBaseMoves, iFlatMovementCost * iBaseMoves);
 	}
+
+#ifdef CVM_IROQUOIS_UA_FIX
+
+	else if(  pUnit->getOwner() == pToPlot->getOwner()
+		   && (eFeature == FEATURE_FOREST || eFeature == FEATURE_JUNGLE)
+		   && pTraits->IsMoveFriendlyWoodsAsRoad()
+		   && !pFromPlot->isValidRoute(pUnit)
+		   && !(eFromFeature == FEATURE_FOREST || eFromFeature == FEATURE_JUNGLE)
+		   && !bRiverCrossing) {
+
+		CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
+		iRouteCost = pRoadInfo->getMovementCost();
+		iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
+	}
+
+#else
+
 	else if(pUnit->getOwner() == pToPlot->getOwner() && (eFeature == FEATURE_FOREST || eFeature == FEATURE_JUNGLE) && pTraits->IsMoveFriendlyWoodsAsRoad())
 	{
 		CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
 		iRouteCost = pRoadInfo->getMovementCost();
 		iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
 	}
+
+#endif
+
+#ifdef CVM_IROQUOIS_UA_FIX
+
+	else if (  pUnit->getOwner() == pFromPlot->getOwner()
+	        && (eFromFeature == FEATURE_FOREST || eFromFeature == FEATURE_JUNGLE)
+			&& pTraits->IsMoveFriendlyWoodsAsRoad()
+			&& pToPlot->isValidRoute(pUnit)
+			&& (kUnitTeam.isBridgeBuilding() || !bRiverCrossing)) {
+
+			CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
+			iRouteCost = pRoadInfo->getMovementCost() + kUnitTeam.getRouteChange(ROUTE_ROAD);
+			iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
+	}
+
+	else if (  pUnit->getOwner() == pToPlot->getOwner()
+			&& (eFeature == FEATURE_FOREST || eFeature == FEATURE_JUNGLE)
+			&& pTraits->IsMoveFriendlyWoodsAsRoad()
+			&& pFromPlot->isValidRoute(pUnit)
+			&& (kUnitTeam.isBridgeBuilding() || !bRiverCrossing)) {
+
+			CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
+			iRouteCost = pRoadInfo->getMovementCost() + kUnitTeam.getRouteChange(ROUTE_ROAD);
+			iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
+	}
+
+	else if (  pUnit->getOwner() == pFromPlot->getOwner()
+			&& pUnit->getOwner() == pToPlot->getOwner()
+			&& pTraits->IsMoveFriendlyWoodsAsRoad()
+			&& (eFromFeature == FEATURE_FOREST || eFromFeature == FEATURE_JUNGLE)
+			&& (eFeature == FEATURE_FOREST || eFeature == FEATURE_JUNGLE)
+			&& (kUnitTeam.isBridgeBuilding() || !bRiverCrossing)) {
+				CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
+				iRouteCost = pRoadInfo->getMovementCost() + kUnitTeam.getRouteChange(ROUTE_ROAD);
+				iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
+			}
+
+#endif
+
 	else
 	{
 		iRouteCost = INT_MAX;

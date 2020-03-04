@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -418,12 +418,23 @@ void CvGameReligions::DoPlayerTurn(CvPlayer& kPlayer)
 					pNotifications->Add(NOTIFICATION_FOUND_PANTHEON, strBuffer, strSummary, -1, -1, -1);
 				}
 			}
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+			else if (!GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS")){
+				const BeliefTypes eBelief = kPlayer.GetReligionAI()->ChoosePantheonBelief();
+
+				FoundPantheon(ePlayer, eBelief);
+			}
+#else
+
 			else
 			{
 				const BeliefTypes eBelief = kPlayer.GetReligionAI()->ChoosePantheonBelief();
 
 				FoundPantheon(ePlayer, eBelief);
 			}
+
+#endif
 		}
 
 		switch (kPlayer.GetFaithPurchaseType())
@@ -828,6 +839,14 @@ void CvGameReligions::FoundPantheon(PlayerTypes ePlayer, BeliefTypes eBelief)
 void CvGameReligions::FoundReligion(PlayerTypes ePlayer, ReligionTypes eReligion, const char* szCustomName, BeliefTypes eBelief1, BeliefTypes eBelief2, BeliefTypes eBelief3, BeliefTypes eBelief4, CvCity* pkHolyCity)
 {
 	CvPlayer& kPlayer = GET_PLAYER(ePlayer);
+
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+	if (GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && !kPlayer.isHuman()) {
+		return;
+	}
+
+#endif
 
 	CvReligion kReligion(eReligion, ePlayer, pkHolyCity, false);
 
@@ -1994,6 +2013,15 @@ bool CvGameReligions::IsPreferredByCivInGame(ReligionTypes eReligion)
 /// Time to spawn a Great Prophet?
 bool CvGameReligions::CheckSpawnGreatProphet(CvPlayer& kPlayer)
 {
+
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+	if (GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && !kPlayer.isHuman()) {
+		return false;
+	}
+
+#endif
+
 	UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString("UNIT_PROPHET", true);
 	if (eUnit == NO_UNIT)
 	{
@@ -2259,6 +2287,14 @@ int CvPlayerReligions::GetNumProphetsSpawned() const
 {
 	return m_iNumProphetsSpawned;
 }
+
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+
+void CvPlayerReligions::incrementNumProphetsSpawned() {
+	m_iNumProphetsSpawned++;
+}
+
+#endif
 
 /// Change count of prophets spawned
 void CvPlayerReligions::ChangeNumProphetsSpawned(int iValue)
@@ -4708,6 +4744,14 @@ CvCity *CvReligionAI::ChooseProphetConversionCity(bool bOnlyBetterThanEnhancingR
 			CvPlayer &kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayerLoop);
 			if(kLoopPlayer.isAlive() && iPlayerLoop != m_pPlayer->GetID())
 			{
+
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+				if (GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && kLoopPlayer.isHuman()) {
+					continue;
+				}
+
+#endif
 				int iCityLoop;
 				for(pLoopCity = GET_PLAYER((PlayerTypes)iPlayerLoop).firstCity(&iCityLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iPlayerLoop).nextCity(&iCityLoop))
 				{
@@ -5045,6 +5089,13 @@ void CvReligionAI::BuyMissionary(ReligionTypes eReligion)
 			CvCity *pBestCity = CvReligionAIHelpers::GetBestCityFaithUnitPurchase(kPlayer, eMissionary, eReligion);
 			if (pBestCity)
 			{
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+				if(GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && !kPlayer.isHuman()) {
+					return;
+				}
+
+#endif
 				pBestCity->Purchase(eMissionary, (BuildingTypes)-1, (ProjectTypes)-1, YIELD_FAITH);
 			}
 		}
@@ -5065,6 +5116,13 @@ void CvReligionAI::BuyInquisitor(ReligionTypes eReligion)
 			CvCity *pBestCity = CvReligionAIHelpers::GetBestCityFaithUnitPurchase(kPlayer, eInquisitor, eReligion);
 			if (pBestCity)
 			{
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+				if(GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && !kPlayer.isHuman()) {
+					return;
+				}
+
+#endif
 				pBestCity->Purchase(eInquisitor, (BuildingTypes)-1, (ProjectTypes)-1, YIELD_FAITH);
 			}
 		}
@@ -5729,6 +5787,15 @@ int CvReligionAI::ScoreCityForMissionary(CvCity* pCity, UnitHandle pUnit)
 
 	if (!GET_PLAYER(pCity->getOwner()).isMinorCiv())
 	{
+
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+		if (GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && GET_PLAYER(pCity->getOwner()).isHuman()) {
+			return 0;
+		}
+
+#endif
+
 		if (m_pPlayer->GetDiplomacyAI()->IsPlayerAgreeNotToConvert(pCity->getOwner()))
 		{
 			return 0;
@@ -5886,6 +5953,14 @@ bool CvReligionAI::HaveNearbyConversionTarget(ReligionTypes eReligion, bool bCan
 			{
 				if (!kPlayer.isBarbarian())
 				{
+
+#ifdef CVM_AI_NO_MAKING_PROPHETS
+
+					if (GC.getGame().isOption("GAMEOPTION_AI_NO_MAKING_PROPHETS") && kPlayer.isHuman()) {
+						continue;
+					}
+
+#endif
 					if (m_pPlayer->GetDiplomacyAI()->IsPlayerAgreeNotToConvert(ePlayer))
 					{
 						continue;

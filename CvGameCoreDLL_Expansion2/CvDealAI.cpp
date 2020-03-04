@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -108,6 +108,18 @@ DealOfferResponseTypes CvDealAI::DoHumanOfferDealToThisAI(CvDeal* pDeal)
 	bool bCantMatchOffer;
 	bool bDealAcceptable = IsDealWithHumanAcceptable(pDeal, eFromPlayer, /*Passed by reference*/ iDealValueToMe, iValueImOffering, iValueTheyreOffering, iAmountOverWeWillRequest, iAmountUnderWeWillOffer, bCantMatchOffer);
 
+#ifdef CVM_AI_ONLY_LUX_TRADES
+
+	if (!GC.getGame().isOption("GAMEOPTION_AI_ONLY_LUX_TRADES")) {
+		if (!bDealAcceptable) {
+			if (!pDeal->IsPeaceTreatyTrade(eFromPlayer) && iValueTheyreOffering > iValueImOffering) {
+				bDealAcceptable = true;
+			}
+		}
+	}
+
+#else
+
 	// If they're actually giving us more than we're asking for (e.g. a gift) then accept the deal
 	if(!bDealAcceptable)
 	{
@@ -116,6 +128,8 @@ DealOfferResponseTypes CvDealAI::DoHumanOfferDealToThisAI(CvDeal* pDeal)
 			bDealAcceptable = true;
 		}
 	}
+
+#endif
 
 	if(bDealAcceptable)
 	{
@@ -500,6 +514,23 @@ void CvDealAI::DoAcceptedDemand(PlayerTypes eFromPlayer, const CvDeal& kDeal)
 /// Will this AI accept pDeal? Handles deal from both human and AI players
 bool CvDealAI::IsDealWithHumanAcceptable(CvDeal* pDeal, PlayerTypes eOtherPlayer, int& iTotalValueToMe, int& iValueImOffering, int& iValueTheyreOffering, int& iAmountOverWeWillRequest, int& iAmountUnderWeWillOffer, bool& bCantMatchOffer)
 {
+
+#ifdef CVM_AI_ONLY_LUX_TRADES
+	if (GC.getGame().isOption("GAMEOPTION_AI_ONLY_LUX_TRADES")) {
+		TradedItemList::iterator it;
+		for (it = pDeal->m_TradedItems.begin(); it != pDeal->m_TradedItems.end(); ++it) {
+			if (it->m_eItemType == TRADE_ITEM_RESOURCES) {
+				ResourceUsageTypes eUsage = GC.getResourceInfo((ResourceTypes)it->m_iData1)->getResourceUsage();
+				if (eUsage != RESOURCEUSAGE_LUXURY) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+#endif
+
 	CvAssertMsg(GET_PLAYER(eOtherPlayer).isHuman(), "DEAL_AI: Trying to see if AI will accept a deal with human player... but it's not human.  Please show Jon.");
 
 	int iPercentOverWeWillRequest;
@@ -547,7 +578,20 @@ bool CvDealAI::IsDealWithHumanAcceptable(CvDeal* pDeal, PlayerTypes eOtherPlayer
 	// Peace deal where we're not surrendering, value must equal cached value
 	else if (pDeal->IsPeaceTreatyTrade(eOtherPlayer))
 	{
+#ifdef CVM_AI_NO_WAR_DECLARATION
+		int iPeaceValueRequired = GetCachedValueOfPeaceWithHuman();
+		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION")
+		   && iPeaceValueRequired > 0
+		   && GET_PLAYER(eOtherPlayer).isHuman()) {
+			   iPeaceValueRequired = 0;
+		   }
+
+		if (iTotalValueToMe >= iPeaceValueRequired)
+#else
+
 		if (iTotalValueToMe >= GetCachedValueOfPeaceWithHuman())
+
+#endif
 		{
 			return true;
 		}

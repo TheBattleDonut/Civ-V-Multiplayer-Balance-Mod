@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+	<!-- Table data -->
+	<GameOptions>
+		<Row>
+			<Type>GAMEOPTION_RANDOMIZE_TURN_ACTIVATION_ORDER</Type>
+			<Description>TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER</Description>
+			<Help>TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
+		</Row>
+	</GameOptions>
+	<Language_en_US>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_en_US>
+	<Language_DE_DE>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>[COLOR_WARNING_TEXT](DE_DE text) [ENDCOLOR]Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_DE_DE>
+	<Language_ES_ES>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>[COLOR_WARNING_TEXT](ES_ES text) [ENDCOLOR]Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_ES_ES>
+	<Language_FR_FR>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>[COLOR_WARNING_TEXT](FR_FR text) [ENDCOLOR]Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_FR_FR>
+	<Language_PL_PL>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>[COLOR_WARNING_TEXT](PL_PL text) [ENDCOLOR]Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_PL_PL>
+	<Language_RU_RU>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]Randomized Player Activation Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GAME_OPTION_RANDOMIZE_TURN_ACTIVATION_ORDER_HELP">
+			<Text>[COLOR_WARNING_TEXT](RU_RU text) [ENDCOLOR]Players in simultaneous mode are activated in a random order every turn.</Text>
+		</Row>
+	</Language_RU_RU>
+</GameData>

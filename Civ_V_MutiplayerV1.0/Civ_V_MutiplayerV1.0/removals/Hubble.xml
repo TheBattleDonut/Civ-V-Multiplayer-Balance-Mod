@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 2/24/2020 11:34:03 PM -->
+<GameData>
+
+  <!-- Disabling Hubble, can't build it etc.-->
+	<Buildings>
+		<Update>
+			<Set Cost="-1"/>
+			<Where Type="BUILDING_HUBBLE" />
+		</Update>
+	</Buildings>
+</GameData>

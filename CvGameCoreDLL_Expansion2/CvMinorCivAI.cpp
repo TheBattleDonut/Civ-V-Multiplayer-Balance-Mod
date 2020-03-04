@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -8805,6 +8805,15 @@ void CvMinorCivAI::ChangeNumGoldGifted(PlayerTypes ePlayer, int iChange)
 /// Major Civ gifted some Gold to this Minor
 void CvMinorCivAI::DoGoldGiftFromMajor(PlayerTypes ePlayer, int iGold)
 {
+
+#ifdef CVM_AI_NO_GOLD_GIFTS_CS
+
+	if (GC.getGame().isOption("GAMEOPTION_AI_NO_GOLD_GIFTS_CS") && !GET_PLAYER(ePlayer).isHuman()) {
+		return;
+	}
+
+#endif
+
 	if(GET_PLAYER(ePlayer).GetTreasury()->GetGold() >= iGold)
 	{
 		int iFriendshipChange = GetFriendshipFromGoldGift(ePlayer, iGold);
@@ -8812,9 +8821,9 @@ void CvMinorCivAI::DoGoldGiftFromMajor(PlayerTypes ePlayer, int iGold)
 			GET_PLAYER(ePlayer).GetTreasury()->LogExpenditure(GetPlayer()->GetMinorCivAI()->GetNamesListAsString(0), iGold,4);
 
 		GET_PLAYER(ePlayer).GetTreasury()->ChangeGold(-iGold);
-		
+
 		ChangeNumGoldGifted(ePlayer, iGold);
-		
+
 		ChangeFriendshipWithMajor(ePlayer, iFriendshipChange);
 
 		// In case we had a Gold Gift quest active, complete it now

@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -2451,6 +2451,15 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 	VALIDATE_OBJECT
 	BuildingTypes ePrereqBuilding;
 	int iI;
+
+#ifdef CVM_BAN_OBSERVATORIES
+
+	if (GC.getGame().isOption("GAMEOPTION_BAN_OBSERVATORY")
+		&& (BuildingTypes)GC.getInfoTypeForString("BUILDING_OBSERVATORY") == eBuilding) {
+		return false;
+	}
+
+#endif
 
 	if(eBuilding == NO_BUILDING)
 	{

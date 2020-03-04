@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -86,6 +86,7 @@ CvGameInitialItemsOverrides::CvGameInitialItemsOverrides()
 //------------------------------------------------------------------------------
 CvGame::CvGame() :
 	m_jonRand(false)
+	, F11Down(false)
 	, m_endTurnTimer()
 	, m_endTurnTimerSemaphore(0)
 	, m_curTurnTimer()
@@ -1839,7 +1840,7 @@ void CvGame::updateSelectionList()
 int s_unitMoveTurnSlice = 0;
 
 bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
-{//gameLoopUpdate - Indicates that we're updating the turn timer for the game loop update.  
+{//gameLoopUpdate - Indicates that we're updating the turn timer for the game loop update.
  //					This forces the active player's turn to finish if her turn time has elapsed.
  //					We also reset the turn timer when ai processing is occurring.
  //					If false, we're simply querying the game for a player's turn timer status.
@@ -1850,13 +1851,22 @@ bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
 		ICvUserInterface2* iface = GC.GetEngineUserInterface();
 		if(getElapsedGameTurns() > 0)
 		{
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+			if(  isLocalPlayer
+			  && ((!gDLL->allAICivsProcessedThisTurn() && allUnitAIProcessed())
+			     || (F11Down && playerID == 0)))
+#else
 			if(isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()))
+#endif
 			{//the turn timer doesn't doesn't start until all ai processing has been completed for this game turn.
 				resetTurnTimer(true);
 
 				//hold the turn timer at 0 seconds with 0% completion
 				CvPreGame::setEndTurnTimerLength(0.0f);
 				iface->updateEndTurnTimer(0.0f);
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+				F11Down = false;
+#endif
 			}
 			else
 			{//turn timer is actively ticking.
@@ -2965,6 +2975,13 @@ void CvGame::handleAction(int iAction)
 
 	// Control
 	CvActionInfo* pkActionInfo = GC.getActionInfo(iAction);
+
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+	if (pkActionInfo->getControlType() == 27) {
+		F11Down = true;
+	}
+#endif
+
 	if(pkActionInfo->getControlType() != NO_CONTROL)
 	{
 		doControl((ControlTypes)(pkActionInfo->getControlType()));
@@ -8354,8 +8371,28 @@ void CvGame::updateMoves()
 		if (isOption(GAMEOPTION_DYNAMIC_TURNS) || isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
 		{//Activate human players who are playing simultaneous turns now that we've finished moves for the AI.
 			// KWG: This code should go into CheckPlayerTurnDeactivate
-			for(iI = 0; iI < MAX_PLAYERS; iI++)
-			{
+
+#ifdef CVM_RANDOMIZE_TURN_ACTIVATION_ORDER
+
+			int aiShuffle[MAX_PLAYERS];
+			if (GC.getGame().isOption("GAMEOPTION_RANDOMIZE_TURN_ACTIVATION_ORDER")) {
+				shuffleArray(aiShuffle, MAX_PLAYERS, getJonRand());
+			} else {
+				for (iI = 0; iI < MAX_PLAYERS; iI++) {
+					aiShuffle[iI] = iI;
+				}
+			}
+
+			for (int iJ = 0; iJ < MAX_PLAYERS; iJ++) {
+				iI = aiShuffle[iJ];
+
+
+#else
+
+			for(iI = 0; iI < MAX_PLAYERS; iI++) {
+
+#endif
+
 				CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
 				if(!player.isTurnActive() && player.isHuman() && player.isAlive() && player.isSimultaneousTurns())
 				{

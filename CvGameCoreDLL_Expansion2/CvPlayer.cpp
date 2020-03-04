@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -5967,6 +5967,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 
 	// Faith for pantheon
 	bool bPantheon = kGoodyInfo.isPantheonFaith();
+
 	if(bPantheon)
 	{
 		// Enough so still get a pantheon if 3 civs pop this in same turn
@@ -5979,6 +5980,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 
 	// Faith for percent of great prophet
 	int iProphetPercent = kGoodyInfo.getProphetPercent();
+
 	if(iProphetPercent > 0)
 	{
 		iFaith = GetReligions()->GetCostNextProphet(false /*bIncludeBeliefDiscounts*/, true /*bAdjustForSpeedDifficulty*/) * iProphetPercent / 100;
@@ -6770,12 +6772,21 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 	// One City Challenge
 	if(pUnitInfo.IsFound() || pUnitInfo.IsFoundAbroad())
 	{
+#ifdef CVM_AI_NO_BUILDING_SETTLERS
+
+		if (  (GC.getGame().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman())
+		   || (!isHuman() && GC.getGame().isOption("GAMEOPTION_AI_NO_BUILDING_SETTLERS")))
+
+#else
+
 		if(GC.getGame().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman())
+
+#endif
 		{
 			return false;
 		}
 	}
-	
+
 	//Policy Requirement
 	PolicyTypes ePolicy = (PolicyTypes)pUnitInfo.GetPolicyType();
 	if (ePolicy != NO_POLICY)
@@ -11971,21 +11982,46 @@ void CvPlayer::ChangeBarbarianCombatBonus(int iChange)
 /// Do we always see where Barb Camps appear?
 bool CvPlayer::IsAlwaysSeeBarbCamps() const
 {
+
+#ifdef CVM_ALWAYS_SEE_BARB_CAMPS
+
+	return true;
+
+#else
+
 	return m_iAlwaysSeeBarbCampsCount > 0;
+
+#endif
 }
 
 //	--------------------------------------------------------------------------------
 /// Sets if we always see where Barb Camps appear
+#ifdef CVM_ALWAYS_SEE_BARB_CAMPS
+
+void CvPlayer::SetAlwaysSeeBarbCampsCount(int /*iValue*/) {
+
+#else
+
 void CvPlayer::SetAlwaysSeeBarbCampsCount(int iValue)
 {
 	m_iAlwaysSeeBarbCampsCount = iValue;
+
+#endif
 }
 
 //	--------------------------------------------------------------------------------
 /// Changes if we always see where Barb Camps appear
+#ifdef CVM_ALWAYS_SEE_BARB_CAMPS
+
+void CvPlayer::ChangeAlwaysSeeBarbCampsCount(int /*iChange*/) {
+
+#else
+
 void CvPlayer::ChangeAlwaysSeeBarbCampsCount(int iChange)
 {
 	SetAlwaysSeeBarbCampsCount(m_iAlwaysSeeBarbCampsCount + iChange);
+
+#endif
 }
 
 //	--------------------------------------------------------------------------------
@@ -21398,12 +21434,24 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 								{
 									if(pNewUnit->IsGreatGeneral())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatGeneralsCreated();
+										}
+#else
 										incrementGreatGeneralsCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
 									else if(pNewUnit->IsGreatAdmiral())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatAdmiralsCreated();
+										}
+#else
 										incrementGreatAdmiralsCreated();
+#endif
 										CvPlot *pSpawnPlot = GetGreatAdmiralSpawnPlot(pNewUnit);
 										if (pNewUnit->plot() != pSpawnPlot)
 										{
@@ -21424,7 +21472,13 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 									}
 									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_WRITER"))
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatWritersCreated();
+										}
+#else
 										incrementGreatWritersCreated();
+#endif
 
 										if (pNewUnit->getUnitInfo().GetOneShotTourism() > 0)
 										{
@@ -21432,20 +21486,50 @@ void CvPlayer::processPolicies(PolicyTypes ePolicy, int iChange)
 										}
 
 										pNewUnit->jumpToNearestValidPlot();
-									}							
+									}
 									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_ARTIST"))
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatArtistsCreated();
+										}
+#else
 										incrementGreatArtistsCreated();
-										pNewUnit->jumpToNearestValidPlot();
-									}							
-									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_MUSICIAN"))
-									{
-										incrementGreatMusiciansCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
+									else if (pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_MUSICIAN"))
+									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatMusiciansCreated();
+										}
+#else
+										incrementGreatMusiciansCreated();
+#endif
+										pNewUnit->jumpToNearestValidPlot();
+									}
+#ifdef CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
+									else if(pNewUnit->getUnitInfo().GetUnitClassType() == GC.getInfoTypeForString("UNITCLASS_PROPHET")) {
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											GetReligions()->incrementNumProphetsSpawned();
+										}
+#else
+										GetReligions()->incrementNumProphetsSpawned();
+#endif
+										pNewUnit->jumpToNearestValidPlot();
+									}
+#endif
 									else if(pNewUnit->IsGreatPerson())
 									{
+#ifdef CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
+										if (!ePolicy == (PolicyTypes)GC.getInfoTypeForString("POLICY_PATRONAGE_FINISHER")) {
+											incrementGreatPeopleCreated();
+										}
+#else
 										incrementGreatPeopleCreated();
+#endif
 										pNewUnit->jumpToNearestValidPlot();
 									}
 									else
