@@ -4,3 +4,9 @@ BuildTemp/
 CvGameCoreDLL.vs2008.ncb
 CvGameCoreDLL.vs2013.VC.db
 CvGameCoreDLL.vs2013.VC.VC.opendb
+Civ_V_MutiplayerV1.0/Build/
+Civ_V_MutiplayerV1.0/Civ_V_MutiplayerV1.0/CvGameCore_Expansion2.pdb
+Civ_V_MutiplayerV1.0/Packages/
+CvGameCoreDLL.vs2008.suo
+ipch/
+*.user
