@@ -1852,14 +1852,7 @@ bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
 		if(getElapsedGameTurns() > 0)
 		{
 #ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-			float d_gameTurnEnd = static_cast<float>(getMaxTurnLen());
-			float d_timeSinceCurrentTurnStart = m_curTurnTimer.Peek() + m_fCurrentTurnTimerPauseDelta;
-			float d_timeSinceGameTurnStart = m_timeSinceGameTurnStart.Peek() + m_fCurrentTurnTimerPauseDelta;
-
-			CvPlayer& curPlayer = GET_PLAYER(playerID);
-			float d_timeElapsed = (curPlayer.isSimultaneousTurns() ? d_timeSinceGameTurnStart : d_timeSinceCurrentTurnStart);
-
-			if(  (isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()) && (d_timeElapsed > d_gameTurnEnd || curPlayer.isEndTurn()))
+			if(  (isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()) && GET_PLAYER(playerID).isEndTurn())
 			  || (F11Down && playerID == 0))
 #else
 			if(isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()))
