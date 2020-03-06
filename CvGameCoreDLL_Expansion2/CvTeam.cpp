@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -1050,6 +1050,22 @@ void CvTeam::DoDeclareWar(TeamTypes eTeam, bool bDefensivePact, bool bMinorAllyP
 	{
 		return;
 	}
+
+#ifdef CVM_CS_WAR_AFTER_PEACE
+
+	if (GET_TEAM(eTeam).isMinorCiv()) {
+		int iPeaceTreatyTurn = GetTurnMadePeaceTreatyWithTeam(eTeam);
+
+		if (iPeaceTreatyTurn != -1) {
+			int iTurnsSincePeace = GC.getGame().getElapsedGameTurns() - iPeaceTreatyTurn;
+
+			if (iTurnsSincePeace < 2){
+				return;
+			}
+		}
+	}
+
+#endif
 
 	CvAssertMsg(eTeam != GetID(), "eTeam is not expected to be equal with GetID()");
 	if(!isBarbarian())
