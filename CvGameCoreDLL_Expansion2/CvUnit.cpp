@@ -2671,7 +2671,9 @@ bool CvUnit::canMoveInto(const CvPlot& plot, byte bMoveFlags) const
 		else //if !(bMoveFlags & MOVEFLAG_ATTACK)
 		{
 			bool bEmbarkedAndAdjacent = false;
+#ifndef CVM_NO_RADAR
 			bool bEnemyUnitPresent = false;
+#endif
 
 			// Without this code, Embarked Units can move on top of enemies because they have no visibility
 			if(isEmbarked() || (bMoveFlags & MOVEFLAG_PRETEND_EMBARKED))
@@ -2682,13 +2684,25 @@ bool CvUnit::canMoveInto(const CvPlot& plot, byte bMoveFlags) const
 				}
 			}
 
+#ifdef CVM_NO_RADAR
+			if (!isHuman() || plot.isVisible(getTeam()) || bEmbarkedAndAdjacent) {
+				if (plot.isEnemyCity(*this)) {
+					return false;
+				}
+#else
 			bool bPlotContainsCombat = false;
 			if(plot.getNumUnits())
 			{
+#endif
 				for(int iUnitLoop = 0; iUnitLoop < plot.getNumUnits(); iUnitLoop++)
 				{
 					CvUnit* loopUnit = plot.getUnitByIndex(iUnitLoop);
 
+#ifdef CVM_NO_RADAR
+					if (loopUnit && !loopUnit->IsDead() && (GET_TEAM(getTeam()).isAtWar(loopUnit->getTeam()) || loopUnit->isAlwaysHostile(plot)) && !loopUnit->canCoexistWithEnemyUnit(getTeam())) {
+						return false;
+					}
+#else
 					if(loopUnit && GET_TEAM(getTeam()).isAtWar(plot.getUnitByIndex(iUnitLoop)->getTeam()))
 					{
 						bEnemyUnitPresent = true;
@@ -2699,9 +2713,11 @@ bool CvUnit::canMoveInto(const CvPlot& plot, byte bMoveFlags) const
 						}
 						break;
 					}
+#endif
 				}
 			}
 
+#ifndef CVM_NO_RADAR
 			if(bPlotContainsCombat)
 			{
 				return false;		// Can't enter a plot that contains combat that doesn't involve us.
@@ -2719,6 +2735,7 @@ bool CvUnit::canMoveInto(const CvPlot& plot, byte bMoveFlags) const
 					return false;
 				}
 			}
+#endif
 		}
 
 		ePlotTeam = ((isHuman()) ? plot.getRevealedTeam(getTeam()) : plot.getTeam());
