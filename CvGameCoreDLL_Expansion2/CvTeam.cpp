@@ -195,6 +195,9 @@ void CvTeam::uninit()
 	{
 		m_aiTechShareCount[i] = 0;
 		m_paiTurnMadePeaceTreatyWithTeam[i] = -1;
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+		d_csBoughtFromMajorCiv[i] = -1;
+#endif
 		m_aiIgnoreWarningCount[i] = 0;
 		m_abHasMet[i] = false;
 		m_abAtWar[i] = false;
@@ -1055,6 +1058,22 @@ void CvTeam::DoDeclareWar(TeamTypes eTeam, bool bDefensivePact, bool bMinorAllyP
 
 	if (GET_TEAM(eTeam).isMinorCiv()) {
 		int iPeaceTreatyTurn = GetTurnMadePeaceTreatyWithTeam(eTeam);
+
+		if (iPeaceTreatyTurn != -1) {
+			int iTurnsSincePeace = GC.getGame().getElapsedGameTurns() - iPeaceTreatyTurn;
+
+			if (iTurnsSincePeace < 2){
+				return;
+			}
+		}
+	}
+
+#endif
+
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+
+	if (!GET_TEAM(eTeam).isMinorCiv()) {
+		int iPeaceTreatyTurn = GetTurnCsBoughtFromMajorCiv(eTeam);
 
 		if (iPeaceTreatyTurn != -1) {
 			int iTurnsSincePeace = GC.getGame().getElapsedGameTurns() - iPeaceTreatyTurn;
@@ -3687,6 +3706,18 @@ void CvTeam::SetTurnMadePeaceTreatyWithTeam(TeamTypes eIndex, int iNewValue)
 	CvAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	m_paiTurnMadePeaceTreatyWithTeam[eIndex] = iNewValue;
 }
+
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+
+int CvTeam::GetTurnCsBoughtFromMajorCiv(TeamTypes eTeam) const {
+	return d_csBoughtFromMajorCiv[eTeam];
+}
+
+void CvTeam::SetTurnCsBoughtFromMajorCiv(TeamTypes eTeam, int iNewValue) {
+	d_csBoughtFromMajorCiv[eTeam] = iNewValue;
+}
+
+#endif
 
 //	--------------------------------------------------------------------------------
 bool CvTeam::IsHasBrokenPeaceTreaty() const
@@ -6889,6 +6920,11 @@ void CvTeam::Read(FDataStream& kStream)
 	ArrayWrapper<int> kTurnMadePeaceWrapper(MAX_TEAMS, &m_paiTurnMadePeaceTreatyWithTeam[0]);
 	kStream >> kTurnMadePeaceWrapper;
 
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+	ArrayWrapper<int> dTurnBoughtCsWrapper(MAX_TEAMS, &d_csBoughtFromMajorCiv[0]);
+	kStream >> dTurnBoughtCsWrapper;
+#endif
+
 	ArrayWrapper<int> kIgnoreWarningWrapper(MAX_TEAMS, &m_aiIgnoreWarningCount[0]);
 	kStream >> kIgnoreWarningWrapper;
 
@@ -7049,6 +7085,11 @@ void CvTeam::Write(FDataStream& kStream) const
 	CvInfosSerializationHelper::WriteHashedDataArray<VoteSourceTypes, int>(kStream, m_aiForceTeamVoteEligibilityCount, GC.getNumVoteSourceInfos());
 
 	kStream << ArrayWrapperConst<int>(MAX_TEAMS, &m_paiTurnMadePeaceTreatyWithTeam[0]);
+
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+	kStream << ArrayWrapperConst<int>(MAX_TEAMS, &d_csBoughtFromMajorCiv[0]);
+#endif
+
 	kStream << ArrayWrapperConst<int>(MAX_TEAMS, &m_aiIgnoreWarningCount[0]);
 
 	kStream << ArrayWrapperConst<bool>(MAX_TEAMS, &m_abHasMet[0]);
