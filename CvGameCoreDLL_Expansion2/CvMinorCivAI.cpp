@@ -5654,16 +5654,17 @@ void CvMinorCivAI::SetAlly(PlayerTypes eNewAlly)
 	m_iTurnAllied = GC.getGame().getGameTurn();
 
 #ifdef CVM_NO_WAR_AFTER_CS_ALLIED
-	CvTeam newAlly = GET_TEAM(GET_PLAYER(m_eAlly).getTeam());
-	newAlly.SetTurnCsBoughtFromMajorCiv(GET_PLAYER(eOldAlly).getTeam(), m_iTurnAllied);
+	CvTeam* newAlly = &GET_TEAM(GET_PLAYER(m_eAlly).getTeam());
+	CvTeam* oldAlly = &GET_TEAM(GET_PLAYER(eOldAlly).getTeam());
+	newAlly->SetTurnCsBoughtFromMajorCiv(GET_PLAYER(eOldAlly).getTeam(), m_iTurnAllied);
 
-	if (GET_TEAM(GET_PLAYER(eOldAlly).getTeam()).GetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam()) == m_iTurnAllied) {
-		GET_TEAM(GET_PLAYER(eOldAlly).getTeam()).SetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam(), -1);
-		newAlly.SetTurnCsBoughtFromMajorCiv(GET_PLAYER(eOldAlly).getTeam(), -1);
+	if (oldAlly->GetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam()) == m_iTurnAllied) {
+		oldAlly->SetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam(), -1);
+		newAlly->SetTurnCsBoughtFromMajorCiv(GET_PLAYER(eOldAlly).getTeam(), -1);
 	}
 
-	if (GET_TEAM(GET_PLAYER(eOldAlly).getTeam()).GetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam()) != -1) {
-		GET_TEAM(GET_PLAYER(eOldAlly).getTeam()).SetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam(), -1);
+	if (oldAlly->GetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam()) != -1) {
+		oldAlly->SetTurnCsBoughtFromMajorCiv(GET_PLAYER(m_eAlly).getTeam(), -1);
 	}
 #endif
 
