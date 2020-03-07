@@ -126,6 +126,9 @@ void ClearPlayerDeltas()
 //	--------------------------------------------------------------------------------
 CvPlayer::CvPlayer() :
 	m_syncArchive(*this)
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	, m_bIsDisconnected("CvPlayer::m_bIsDisconnected", m_syncArchive)
+#endif
 	, m_iStartingX("CvPlayer::m_iStartingX", m_syncArchive)
 	, m_iStartingY("CvPlayer::m_iStartingY", m_syncArchive)
 	, m_iTotalPopulation("CvPlayer::m_iTotalPopulation", m_syncArchive, true)
@@ -330,9 +333,6 @@ CvPlayer::CvPlayer() :
 	, m_eConqueror(NO_PLAYER)
 	, m_bHasAdoptedStateReligion("CvPlayer::m_bHasAdoptedStateReligion", m_syncArchive)
 	, m_bAlliesGreatPersonBiasApplied("CvPlayer::m_bAlliesGreatPersonBiasApplied", m_syncArchive)
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	, m_bConnected(true)
-#endif
 	, m_eID("CvPlayer::m_eID", m_syncArchive)
 	, m_ePersonalityType("CvPlayer::m_ePersonalityType", m_syncArchive)
 	, m_aiCityYieldChange("CvPlayer::m_aiCityYieldChange", m_syncArchive)
@@ -733,6 +733,10 @@ void CvPlayer::uninit()
 	FAutoArchive& archive = getSyncArchive();
 	archive.clearDelta();
 
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	m_bIsDisconnected = false;
+#endif
+
 	m_iStartingX = INVALID_PLOT_COORD;
 	m_iStartingY = INVALID_PLOT_COORD;
 	m_iTotalPopulation = 0;
@@ -966,9 +970,6 @@ void CvPlayer::uninit()
 	m_eConqueror = NO_PLAYER;
 	m_bHasAdoptedStateReligion = false;
 	m_bAlliesGreatPersonBiasApplied = false;
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	m_bConnected = false;
-#endif
 	m_lastGameTurnInitialAIProcessed = -1;
 
 	m_eID = NO_PLAYER;
@@ -1219,6 +1220,17 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		AI_reset();
 	}
 }
+
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+
+bool CvPlayer::isDisconnected() const {
+	return m_bIsDisconnected;
+}
+void CvPlayer::setIsDisconnected(bool bNewValue) {
+	m_bIsDisconnected = bNewValue;
+}
+
+#endif
 
 //	--------------------------------------------------------------------------------
 /// This is called after the map and other game constructs have been setup and just before the game starts.
@@ -22135,9 +22147,6 @@ void CvPlayer::Read(FDataStream& kStream)
 	kStream >> m_eConqueror;
 	kStream >> m_bHasAdoptedStateReligion;
 	kStream >> m_bAlliesGreatPersonBiasApplied;
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	kStream >> m_bConnected;
-#endif
 	kStream >> m_eID;
 	kStream >> m_ePersonalityType;
 	kStream >> m_aiCityYieldChange;
@@ -22617,9 +22626,6 @@ void CvPlayer::Write(FDataStream& kStream) const
 	kStream << m_eConqueror;
 	kStream << m_bHasAdoptedStateReligion;
 	kStream << m_bAlliesGreatPersonBiasApplied;
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	kStream << m_bConnected;
-#endif
 
 	kStream << m_eID;
 	kStream << m_ePersonalityType;
@@ -24577,15 +24583,23 @@ void CvPlayer::disconnected()
 						disconnectString = Localization::Lookup("TXT_KEY_PLAYER_DISCONNECTED_PITBOSS");
 						disconnectString << getNameKey();	
 					}
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-					SetConnected(false);
-#endif
+
 					pNotifications->Add(NOTIFICATION_PLAYER_DISCONNECTED, disconnectString.toUTF8(), disconnectString.toUTF8(), -1, -1, GetID());
 				}
 			}
 
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+		if (!isObserver()) {
+			if (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())) {
+				setIsDisconnected(false);
+				if (GC.getGame().getPausePlayer() == GetID()) {
+					GC.getGame().setPausePlayer(NO_PLAYER);
+				}
+#else
+
 		if(!isObserver() && (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())))
 		{
+#endif
 			// JAR : First pass, automatically fall back to CPU so the
 			// game can continue. Todo : add popup on host asking whether
 			// the AI should take over or everyone should wait for the
@@ -24601,6 +24615,16 @@ void CvPlayer::disconnected()
 				checkRunAutoMovesForEveryone();
 			}
 		}
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+			else if (  isAlive()
+					&& isTurnActive()
+					&& (GC.getGame().isOption(GAMEOPTION_DYNAMIC_TURNS) || GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
+					&& !gDLL->IsPlayerKicked(GetID())) {
+				setIsDisconnected(true);
+				GC.getGame().setPausePlayer(GetID());
+			}
+		}
+#endif
 	}
 }
 //	-----------------------------------------------------------------------------------------------
@@ -24628,10 +24652,12 @@ void CvPlayer::reconnected()
 		{
 			pNotifications->Add(NOTIFICATION_PLAYER_CONNECTING, connectString.toUTF8(), connectString.toUTF8(), -1, -1, GetID());
 		}
-	}
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	SetConnected(true);
+
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+		setIsDisconnected(false);
 #endif
+
+	}
 }
 //	-----------------------------------------------------------------------------------------------
 bool CvPlayer::hasBusyUnitUpdatesRemaining() const

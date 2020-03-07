@@ -79,6 +79,11 @@ public:
 	void gameStartInit();
 	void uninit();
 
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	bool isDisconnected() const;
+	void setIsDisconnected(bool bNewValue);
+#endif
+
 	void initFreeState(CvGameInitialItemsOverrides& kOverrides);
 	void initFreeUnits(CvGameInitialItemsOverrides& kOverrides);
 	void addFreeUnitAI(UnitAITypes eUnitAI, int iCount);
@@ -1463,16 +1468,6 @@ public:
 		return m_strEmbarkedGraphicOverride;
 	};
 
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	void SetConnected(bool newValue) {
-		m_bConnected = newValue;
-	};
-
-	bool GetConnected() {
-		return m_bConnected;
-	};
-#endif
-
 	// for serialization
 	virtual void Read(FDataStream& kStream);
 	virtual void Write(FDataStream& kStream) const;
@@ -1569,6 +1564,10 @@ protected:
 
 	FAutoVariable<PlayerTypes, CvPlayer> m_eID;
 	FAutoVariable<LeaderHeadTypes, CvPlayer> m_ePersonalityType;
+
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	FAutoVariable<bool, CvPlayer> m_bIsDisconnected;
+#endif
 
 	FAutoVariable<int, CvPlayer> m_iStartingX;
 	FAutoVariable<int, CvPlayer> m_iStartingY;
@@ -1801,10 +1800,6 @@ protected:
 	PlayerTypes m_eConqueror;
 	FAutoVariable<bool, CvPlayer> m_bHasAdoptedStateReligion;
 	FAutoVariable<bool, CvPlayer> m_bAlliesGreatPersonBiasApplied;
-
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	bool m_bConnected;
-#endif
 
 	FAutoVariable<std::vector<int>, CvPlayer> m_aiCityYieldChange;
 	FAutoVariable<std::vector<int>, CvPlayer> m_aiCoastalCityYieldChange;

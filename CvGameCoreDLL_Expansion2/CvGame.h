@@ -552,10 +552,6 @@ public:
 	void TurnTimerSync(float fCurTurnTime, float fTurnStartTime);
 	void GetTurnTimerData(float& fCurTurnTime, float& fTurnStartTime);
 
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-	bool allPlayersConnected();
-#endif
-
 	int GetDealDuration();
 	int GetPeaceDuration();
 

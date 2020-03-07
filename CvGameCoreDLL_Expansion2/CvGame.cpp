@@ -1964,25 +1964,6 @@ void CvGame::GetTurnTimerData(float& fCurTurnTime, float& fTurnStartTime)
 	fTurnStartTime = m_timeSinceGameTurnStart.Peek();
 }
 
-#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
-
-bool allPlayersConnected() {
-	int iI;
-
-	for(iI = 0; iI < MAX_PLAYERS; iI++)
-	{
-		CvPlayerAI& kPlayer = GET_PLAYER((PlayerTypes)iI);
-		if(kPlayer.isAlive() && !kPlayer.GetConnected())
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-#endif
-
 //	-----------------------------------------------------------------------------------------------
 void CvGame::updateTestEndTurn()
 {
@@ -5727,6 +5708,22 @@ bool CvGame::isPaused()
 //	-----------------------------------------------------------------------------------------------
 void CvGame::setPausePlayer(PlayerTypes eNewValue)
 {
+
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	if (eNewValue == NO_PLAYER)
+	{
+		for (int iI = 0; iI < MAX_MAJOR_CIVS; iI++)
+		{
+			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
+			if (kPlayer.isAlive() && kPlayer.isHuman() && kPlayer.isDisconnected())
+			{
+				eNewValue = kPlayer.GetID();
+				break;
+			}
+		}
+	}
+#endif
+
 	if(!isNetworkMultiPlayer())
 	{
 		// If we're not in Network MP, if the game is paused the turn timer is too.
