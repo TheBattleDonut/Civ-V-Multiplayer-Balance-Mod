@@ -19602,6 +19602,23 @@ void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFla
 
 #endif
 
+#ifdef CVM_NO_IMPROVEMENT_IN_ENNEMY_TERRITORY_AT_WAR
+
+	if (eMission == CvTypes::getMISSION_BUILD() && !IsInFriendlyTerritory()) {
+		const BuildTypes eBuild = (BuildTypes) iData1;
+
+		if (eBuild != NO_BUILD) {
+			CvBuildInfo* pkBuildingInfo = GC.getBuildInfo(eBuild);
+
+			if (  GET_TEAM(GET_PLAYER(getOwner()).getTeam()).isAtWar(GET_PLAYER(plot()->getOwner()).getTeam())
+			   && pkBuildingInfo->getImprovement() != NO_IMPROVEMENT) { //code 14 for forts
+				return;
+			}
+		}
+	}
+
+#endif
+
 	VALIDATE_OBJECT
 	CvUnitMission::PushMission(this, eMission, iData1, iData2, iFlags, bAppend, bManual, eMissionAI, pMissionAIPlot, pMissionAIUnit);
 }
