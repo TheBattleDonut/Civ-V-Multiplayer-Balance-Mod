@@ -330,6 +330,9 @@ CvPlayer::CvPlayer() :
 	, m_eConqueror(NO_PLAYER)
 	, m_bHasAdoptedStateReligion("CvPlayer::m_bHasAdoptedStateReligion", m_syncArchive)
 	, m_bAlliesGreatPersonBiasApplied("CvPlayer::m_bAlliesGreatPersonBiasApplied", m_syncArchive)
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	, m_bConnected(true)
+#endif
 	, m_eID("CvPlayer::m_eID", m_syncArchive)
 	, m_ePersonalityType("CvPlayer::m_ePersonalityType", m_syncArchive)
 	, m_aiCityYieldChange("CvPlayer::m_aiCityYieldChange", m_syncArchive)
@@ -963,6 +966,9 @@ void CvPlayer::uninit()
 	m_eConqueror = NO_PLAYER;
 	m_bHasAdoptedStateReligion = false;
 	m_bAlliesGreatPersonBiasApplied = false;
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	m_bConnected = false;
+#endif
 	m_lastGameTurnInitialAIProcessed = -1;
 
 	m_eID = NO_PLAYER;
@@ -22129,6 +22135,9 @@ void CvPlayer::Read(FDataStream& kStream)
 	kStream >> m_eConqueror;
 	kStream >> m_bHasAdoptedStateReligion;
 	kStream >> m_bAlliesGreatPersonBiasApplied;
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	kStream >> m_bConnected;
+#endif
 	kStream >> m_eID;
 	kStream >> m_ePersonalityType;
 	kStream >> m_aiCityYieldChange;
@@ -22608,6 +22617,9 @@ void CvPlayer::Write(FDataStream& kStream) const
 	kStream << m_eConqueror;
 	kStream << m_bHasAdoptedStateReligion;
 	kStream << m_bAlliesGreatPersonBiasApplied;
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	kStream << m_bConnected;
+#endif
 
 	kStream << m_eID;
 	kStream << m_ePersonalityType;
@@ -24565,7 +24577,9 @@ void CvPlayer::disconnected()
 						disconnectString = Localization::Lookup("TXT_KEY_PLAYER_DISCONNECTED_PITBOSS");
 						disconnectString << getNameKey();	
 					}
-
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+					SetConnected(false);
+#endif
 					pNotifications->Add(NOTIFICATION_PLAYER_DISCONNECTED, disconnectString.toUTF8(), disconnectString.toUTF8(), -1, -1, GetID());
 				}
 			}
@@ -24615,6 +24629,9 @@ void CvPlayer::reconnected()
 			pNotifications->Add(NOTIFICATION_PLAYER_CONNECTING, connectString.toUTF8(), connectString.toUTF8(), -1, -1, GetID());
 		}
 	}
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	SetConnected(true);
+#endif
 }
 //	-----------------------------------------------------------------------------------------------
 bool CvPlayer::hasBusyUnitUpdatesRemaining() const

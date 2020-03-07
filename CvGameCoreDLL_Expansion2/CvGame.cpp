@@ -1964,6 +1964,25 @@ void CvGame::GetTurnTimerData(float& fCurTurnTime, float& fTurnStartTime)
 	fTurnStartTime = m_timeSinceGameTurnStart.Peek();
 }
 
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+
+bool allPlayersConnected() {
+	int iI;
+
+	for(iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayerAI& kPlayer = GET_PLAYER((PlayerTypes)iI);
+		if(kPlayer.isAlive() && !kPlayer.GetConnected())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+#endif
+
 //	-----------------------------------------------------------------------------------------------
 void CvGame::updateTestEndTurn()
 {

@@ -1463,6 +1463,16 @@ public:
 		return m_strEmbarkedGraphicOverride;
 	};
 
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	void SetConnected(bool newValue) {
+		m_bConnected = newValue;
+	};
+
+	bool GetConnected() {
+		return m_bConnected;
+	};
+#endif
+
 	// for serialization
 	virtual void Read(FDataStream& kStream);
 	virtual void Write(FDataStream& kStream) const;
@@ -1791,6 +1801,10 @@ protected:
 	PlayerTypes m_eConqueror;
 	FAutoVariable<bool, CvPlayer> m_bHasAdoptedStateReligion;
 	FAutoVariable<bool, CvPlayer> m_bAlliesGreatPersonBiasApplied;
+
+#ifdef CVM_NO_INPUTS_AFTER_DISCONNECT
+	bool m_bConnected;
+#endif
 
 	FAutoVariable<std::vector<int>, CvPlayer> m_aiCityYieldChange;
 	FAutoVariable<std::vector<int>, CvPlayer> m_aiCoastalCityYieldChange;
