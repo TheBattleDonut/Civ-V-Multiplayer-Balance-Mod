@@ -14,7 +14,7 @@ function GetMapScriptInfo()
 		Description = "Fractal + Resources option",
         IconIndex = 5,
         SupportsMultiplayer = true,
-        CustomOptions = {resources},
+        CustomOptions = {sea_level, resources},
 	}
 end
 ----------------------------------------------------------------------------------
@@ -23,11 +23,17 @@ function GeneratePlotTypes()
 
 	local fractal_world = FractalWorld.Create();
 	fractal_world:InitFractal{
-		rift_grain = -1, 
-		has_center_rift = false, 
+		rift_grain = -1,
+		has_center_rift = false,
 		polar = true};
 
+	local sea_lev = Map.GetCustomOption(1)
+	if sea_lev == 4 then
+		sea_lev = 1 + Map.Rand(3, "Random Sea Level - Lua");
+	end
+
 	local args = {
+		sea_level = sea_lev,
 		has_center_rift = false
 		}
 	local plotTypes = fractal_world:GeneratePlotTypes(args);
@@ -55,7 +61,7 @@ end
 ------------------------------------------------------------------------------
 function StartPlotSystem()
 	-- Get Resources setting input by user.
-	local res = Map.GetCustomOption(1)
+	local res = Map.GetCustomOption(2)
 	if res == 6 then
 		res = 1 + Map.Rand(3, "Random Resources Option - Lua");
 	end
