@@ -13,6 +13,7 @@ function GetMapScriptInfo()
 		Name = "Fractal Plus",
 		Description = "Fractal + Resources option",
         IconIndex = 5,
+        SupportsMultiplayer = true,
         CustomOptions = {resources},
 	}
 end
