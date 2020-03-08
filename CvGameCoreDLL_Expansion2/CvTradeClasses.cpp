@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -3057,6 +3057,7 @@ bool CvPlayerTrade::PlunderTradeRoute(int iTradeConnectionID)
 		DLLUI->AddMessage(0, m_pPlayer->GetID(), true, GC.getEVENT_MESSAGE_TIME(), strBuffer);
 	}
 
+#ifndef CVM_TRIPLE_BARB_SPAWN_FIX
 	// barbarians get a bonus unit out of the deal!
 	if (m_pPlayer->isBarbarian() && pPlot)
 	{
@@ -3070,6 +3071,7 @@ bool CvPlayerTrade::PlunderTradeRoute(int iTradeConnectionID)
 			}
 		}
 	}
+#endif
 
 	// do the notification stuff
 	if (pOriginCity && pDestCity)
