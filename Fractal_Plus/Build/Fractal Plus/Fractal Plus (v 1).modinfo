@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mod id="5eed5373-eb28-4ced-a9d5-caa8b834155c" version="1">
+  <Properties>
+    <Name>Fractal Plus</Name>
+    <Stability>Alpha</Stability>
+    <Teaser>A fractal map script with resource option.</Teaser>
+    <Description>A fractal map script with resource option.</Description>
+    <Authors>Admin</Authors>
+    <HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>1</SupportsMultiplayer>
+    <SupportsHotSeat>1</SupportsHotSeat>
+    <SupportsMac>1</SupportsMac>
+    <ReloadAudioSystem>0</ReloadAudioSystem>
+    <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>0</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>0</ReloadUnitSystem>
+  </Properties>
+  <Dependencies />
+  <References />
+  <Blocks />
+  <Files>
+    <File md5="05D9C2E75CD6C434BE6323DC1E5AB5B8" import="0">FractalPlus.lua</File>
+  </Files>
+</Mod>
