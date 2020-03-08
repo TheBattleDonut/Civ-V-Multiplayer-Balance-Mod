@@ -678,7 +678,7 @@ end
 ------------------------------------------------------------------------------
 function StartPlotSystem()
 	-- Get Resources setting input by user.
-	local res = Map.GetCustomOption(5)
+	local res = Map.GetCustomOption(1)
 	if res == 6 then
 		res = 1 + Map.Rand(3, "Random Resources Option - Lua");
 	end

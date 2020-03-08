@@ -10,3 +10,5 @@ Civ_V_MutiplayerV1.0/Packages/
 CvGameCoreDLL.vs2008.suo
 ipch/
 *.user
+Shuffle_Plus/Build/
+Shuffle_Plus/Packages/
