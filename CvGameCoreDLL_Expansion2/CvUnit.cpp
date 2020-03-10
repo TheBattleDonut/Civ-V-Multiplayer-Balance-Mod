@@ -19611,7 +19611,7 @@ void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFla
 			CvBuildInfo* pkBuildingInfo = GC.getBuildInfo(eBuild);
 
 			if (  GET_TEAM(GET_PLAYER(getOwner()).getTeam()).isAtWar(GET_PLAYER(plot()->getOwner()).getTeam())
-			   && pkBuildingInfo->getImprovement() != NO_IMPROVEMENT) { //code 14 for forts
+			   && (pkBuildingInfo->getImprovement() != NO_IMPROVEMENT || pkBuildingInfo->isRepair())) { //code 14 for forts
 				return;
 			}
 		}
