@@ -7521,7 +7521,11 @@ void CvGame::doTurn()
 	int iLoopPlayer;
 	int iI;
 
+#ifdef CVM_AUTOSAVE_FIX
+	if (getAIAutoPlay() || isNetworkMultiPlayer())
+#else
 	if(getAIAutoPlay())
+#endif
 	{
 		gDLL->AutoSave(false);
 	}
@@ -7683,10 +7687,12 @@ void CvGame::doTurn()
 
 	LogGameState();
 
+#ifndef CVM_AUTOSAVE_FIX
 	if(isNetworkMultiPlayer())
 	{//autosave after doing a turn
 		gDLL->AutoSave(false);
 	}
+#endif
 
 	gDLL->PublishNewGameTurn(getGameTurn());
 }

@@ -35,6 +35,7 @@
 // Bug Fixes
 #define CVM_CITADEL_BUG_FIX
 #define CVM_TRIPLE_BARB_SPAWN_FIX
+#define CVM_AUTOSAVE_FIX
 
 // Policy changes
 #define CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
