@@ -126,9 +126,6 @@ void ClearPlayerDeltas()
 //	--------------------------------------------------------------------------------
 CvPlayer::CvPlayer() :
 	m_syncArchive(*this)
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	, m_bIsDisconnected("CvPlayer::m_bIsDisconnected", m_syncArchive)
-#endif
 	, m_iStartingX("CvPlayer::m_iStartingX", m_syncArchive)
 	, m_iStartingY("CvPlayer::m_iStartingY", m_syncArchive)
 	, m_iTotalPopulation("CvPlayer::m_iTotalPopulation", m_syncArchive, true)
@@ -733,10 +730,6 @@ void CvPlayer::uninit()
 	FAutoArchive& archive = getSyncArchive();
 	archive.clearDelta();
 
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	m_bIsDisconnected = false;
-#endif
-
 	m_iStartingX = INVALID_PLOT_COORD;
 	m_iStartingY = INVALID_PLOT_COORD;
 	m_iTotalPopulation = 0;
@@ -1220,17 +1213,6 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		AI_reset();
 	}
 }
-
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-
-bool CvPlayer::isDisconnected() const {
-	return m_bIsDisconnected;
-}
-void CvPlayer::setIsDisconnected(bool bNewValue) {
-	m_bIsDisconnected = bNewValue;
-}
-
-#endif
 
 //	--------------------------------------------------------------------------------
 /// This is called after the map and other game constructs have been setup and just before the game starts.
@@ -24591,12 +24573,9 @@ void CvPlayer::disconnected()
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
 		if (!isObserver()) {
 			if (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())) {
-				setIsDisconnected(false);
-				if (GC.getGame().getPausePlayer() == GetID()) {
-					GC.getGame().setPausePlayer(NO_PLAYER);
-				}
-#else
+				GC.getGame().decrementPlayerDisconnected();
 
+#else
 		if(!isObserver() && (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())))
 		{
 #endif
@@ -24620,8 +24599,7 @@ void CvPlayer::disconnected()
 					&& isTurnActive()
 					&& (GC.getGame().isOption(GAMEOPTION_DYNAMIC_TURNS) || GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
 					&& !gDLL->IsPlayerKicked(GetID())) {
-				setIsDisconnected(true);
-				GC.getGame().setPausePlayer(GetID());
+						GC.getGame().incrementPlayerDisconnected();
 			}
 		}
 #endif
@@ -24654,7 +24632,7 @@ void CvPlayer::reconnected()
 		}
 
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
-		setIsDisconnected(false);
+		GC.getGame().decrementPlayerDisconnected();
 #endif
 
 	}

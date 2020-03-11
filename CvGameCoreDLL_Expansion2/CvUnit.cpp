@@ -19586,6 +19586,13 @@ bool CvUnit::CanDoInterfaceMode(InterfaceModeTypes eInterfaceMode, bool bTestVis
 void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, CvPlot* pMissionAIPlot, CvUnit* pMissionAIUnit)
 {
 
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	if (  GC.getGame().getPlayerDisconnected() > 0
+	   && (GC.getGame().isOption(GAMEOPTION_DYNAMIC_TURNS) || GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))) {
+		return;
+	}
+#endif
+
 #ifdef CVM_NO_INPUT_TURN_ROLL_OVER
 
 	if (GET_PLAYER(getOwner()).isEndTurn() && (!gDLL->allAICivsProcessedThisTurn() || !GC.getGame().allUnitAIProcessed())) {

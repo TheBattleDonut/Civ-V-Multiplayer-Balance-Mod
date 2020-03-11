@@ -86,7 +86,12 @@ CvGameInitialItemsOverrides::CvGameInitialItemsOverrides()
 //------------------------------------------------------------------------------
 CvGame::CvGame() :
 	m_jonRand(false)
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
 	, F11Down(false)
+#endif
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	, playerDisconnected(0)
+#endif
 	, m_endTurnTimer()
 	, m_endTurnTimerSemaphore(0)
 	, m_curTurnTimer()
@@ -5708,21 +5713,6 @@ bool CvGame::isPaused()
 //	-----------------------------------------------------------------------------------------------
 void CvGame::setPausePlayer(PlayerTypes eNewValue)
 {
-
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	if (eNewValue == NO_PLAYER)
-	{
-		for (int iI = 0; iI < MAX_MAJOR_CIVS; iI++)
-		{
-			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
-			if (kPlayer.isAlive() && kPlayer.isHuman() && kPlayer.isDisconnected())
-			{
-				eNewValue = kPlayer.GetID();
-				break;
-			}
-		}
-	}
-#endif
 
 	if(!isNetworkMultiPlayer())
 	{

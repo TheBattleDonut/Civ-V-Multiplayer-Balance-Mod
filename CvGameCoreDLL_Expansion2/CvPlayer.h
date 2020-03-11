@@ -79,11 +79,6 @@ public:
 	void gameStartInit();
 	void uninit();
 
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	bool isDisconnected() const;
-	void setIsDisconnected(bool bNewValue);
-#endif
-
 	void initFreeState(CvGameInitialItemsOverrides& kOverrides);
 	void initFreeUnits(CvGameInitialItemsOverrides& kOverrides);
 	void addFreeUnitAI(UnitAITypes eUnitAI, int iCount);
@@ -1564,10 +1559,6 @@ protected:
 
 	FAutoVariable<PlayerTypes, CvPlayer> m_eID;
 	FAutoVariable<LeaderHeadTypes, CvPlayer> m_ePersonalityType;
-
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	FAutoVariable<bool, CvPlayer> m_bIsDisconnected;
-#endif
 
 	FAutoVariable<int, CvPlayer> m_iStartingX;
 	FAutoVariable<int, CvPlayer> m_iStartingY;
