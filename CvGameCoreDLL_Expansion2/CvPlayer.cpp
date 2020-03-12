@@ -24570,8 +24570,15 @@ void CvPlayer::disconnected()
 				}
 			}
 
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+		if (!isObserver()) {
+			if (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())) {
+				GC.getGame().decrementPlayerDisconnected();
+
+#else
 		if(!isObserver() && (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())))
 		{
+#endif
 			// JAR : First pass, automatically fall back to CPU so the
 			// game can continue. Todo : add popup on host asking whether
 			// the AI should take over or everyone should wait for the
@@ -24587,6 +24594,15 @@ void CvPlayer::disconnected()
 				checkRunAutoMovesForEveryone();
 			}
 		}
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+			else if (  isAlive()
+					&& isTurnActive()
+					&& (GC.getGame().isOption(GAMEOPTION_DYNAMIC_TURNS) || GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
+					&& !gDLL->IsPlayerKicked(GetID())) {
+						GC.getGame().incrementPlayerDisconnected();
+			}
+		}
+#endif
 	}
 }
 //	-----------------------------------------------------------------------------------------------
@@ -24614,6 +24630,11 @@ void CvPlayer::reconnected()
 		{
 			pNotifications->Add(NOTIFICATION_PLAYER_CONNECTING, connectString.toUTF8(), connectString.toUTF8(), -1, -1, GetID());
 		}
+
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+		GC.getGame().decrementPlayerDisconnected();
+#endif
+
 	}
 }
 //	-----------------------------------------------------------------------------------------------

@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# ModBuddy Solution File, Format Version 11.00
+Project("{F5FC21B5-7CC2-458A-ABBA-992F515BBA20}") = "Fractal_Plus", "Fractal_Plus\Fractal_Plus.civ5proj", "{C2841B73-97C1-40BF-B73C-13A740C1B317}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|x86 = Default|x86
+		Deploy Only|x86 = Deploy Only|x86
+		Package Only|x86 = Package Only|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Default|x86.ActiveCfg = Default|x86
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Default|x86.Build.0 = Default|x86
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Deploy Only|x86.ActiveCfg = Deploy Only|x86
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Deploy Only|x86.Build.0 = Deploy Only|x86
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Package Only|x86.ActiveCfg = Package Only|x86
+		{C2841B73-97C1-40BF-B73C-13A740C1B317}.Package Only|x86.Build.0 = Package Only|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -86,7 +86,12 @@ CvGameInitialItemsOverrides::CvGameInitialItemsOverrides()
 //------------------------------------------------------------------------------
 CvGame::CvGame() :
 	m_jonRand(false)
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
 	, F11Down(false)
+#endif
+#ifdef CVM_PAUSE_AFTER_DISCONNECT
+	, playerDisconnected(0)
+#endif
 	, m_endTurnTimer()
 	, m_endTurnTimerSemaphore(0)
 	, m_curTurnTimer()
@@ -1852,9 +1857,8 @@ bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
 		if(getElapsedGameTurns() > 0)
 		{
 #ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-			if(  isLocalPlayer
-			  && ((!gDLL->allAICivsProcessedThisTurn() && allUnitAIProcessed())
-			     || (F11Down && playerID == 0)))
+			if(  (isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()) && GET_PLAYER(playerID).isEndTurn())
+			  || (F11Down && playerID == 0))
 #else
 			if(isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()))
 #endif
@@ -5709,6 +5713,7 @@ bool CvGame::isPaused()
 //	-----------------------------------------------------------------------------------------------
 void CvGame::setPausePlayer(PlayerTypes eNewValue)
 {
+
 	if(!isNetworkMultiPlayer())
 	{
 		// If we're not in Network MP, if the game is paused the turn timer is too.
@@ -7506,7 +7511,11 @@ void CvGame::doTurn()
 	int iLoopPlayer;
 	int iI;
 
+#ifdef CVM_AUTOSAVE_FIX
+	if (getAIAutoPlay() || isNetworkMultiPlayer())
+#else
 	if(getAIAutoPlay())
+#endif
 	{
 		gDLL->AutoSave(false);
 	}
@@ -7668,10 +7677,12 @@ void CvGame::doTurn()
 
 	LogGameState();
 
+#ifndef CVM_AUTOSAVE_FIX
 	if(isNetworkMultiPlayer())
 	{//autosave after doing a turn
 		gDLL->AutoSave(false);
 	}
+#endif
 
 	gDLL->PublishNewGameTurn(getGameTurn());
 }

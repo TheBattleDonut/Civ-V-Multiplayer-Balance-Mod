@@ -2210,8 +2210,18 @@ void CvLeague::DoVoteEnact(int iID, PlayerTypes eVoter, int iNumVotes, int iChoi
 		{
 			if (it->GetID() == iID)
 			{
+#ifdef CVM_UN_WORLD_LEADER_VOTES
+				if (it->GetEffects()->bDiplomaticVictory) {
+					it->GetVoterDecision()->ProcessVote(eVoter, GetRemainingVotesForMember(eVoter), eVoter);
+					GetMember(eVoter)->iVotes = 0;
+				} else {
+					it->GetVoterDecision()->ProcessVote(eVoter, iNumVotes, iChoice);
+					GetMember(eVoter)->iVotes -= iNumVotes;
+				}
+#else
 				it->GetVoterDecision()->ProcessVote(eVoter, iNumVotes, iChoice);
 				GetMember(eVoter)->iVotes -= iNumVotes;
+#endif
 				CvAssertMsg(GetRemainingVotesForMember(eVoter) >= 0, "A voter now has negative votes remaining. Please send Anton your save file and version.");
 				bProcessed = true;
 				break;
@@ -3134,6 +3144,14 @@ int CvLeague::GetNumMembers() const
 
 bool CvLeague::CanVote(PlayerTypes ePlayer)
 {
+
+#ifdef CVM_AI_NO_VOTES
+	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+	   && !GET_PLAYER(ePlayer).isHuman()) {
+		return false;
+	}
+#endif
+
 	if (CanEverVote(ePlayer))
 	{
 		return (GetRemainingVotesForMember(ePlayer) > 0);
@@ -3143,6 +3161,14 @@ bool CvLeague::CanVote(PlayerTypes ePlayer)
 
 bool CvLeague::CanEverVote(PlayerTypes ePlayer)
 {
+
+#ifdef CVM_AI_NO_VOTES
+	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
+	   && !GET_PLAYER(ePlayer).isHuman()) {
+		return false;
+	}
+#endif
+
 	CvAssertMsg(ePlayer >= 0, "ePlayer is expected to be non-negative (invalid Index). Please send Anton your save file and version.");
 	CvAssertMsg(ePlayer < MAX_PLAYERS, "ePlayer is expected to be within maximum bounds (invalid Index). Please send Anton your save file and version.");
 
@@ -5518,14 +5544,13 @@ void CvLeague::AssignStartingVotes()
 
 #ifdef CVM_AI_NO_VOTES
 		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
-		   && GET_PLAYER(it->ePlayer).isHuman()
-		   && GC.getGame().isGameMultiPlayer()
-		   && CanEverVote(it->ePlayer))
-#else
+		   && !GET_PLAYER(it->ePlayer).isHuman()) {
+
+			continue;
+		}
+#endif
 
 		if (CanEverVote(it->ePlayer))
-
-#endif
 		{
 			it->iVotes = CalculateStartingVotesForMember(it->ePlayer, /*bForceUpdateSources*/ true);
 			it->iAbstainedVotes = 0;
@@ -5550,16 +5575,15 @@ void CvLeague::AssignProposalPrivileges()
 #ifdef CVM_AI_NO_VOTES
 
 		if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
-		   && GET_PLAYER(it->ePlayer).isHuman()
-		   && GC.getGame().isGameMultiPlayer()
-		   && CanEverPropose(it->ePlayer))
+		   && !GET_PLAYER(it->ePlayer).isHuman()) {
 
+			continue;
+		}
 
-#else
-
-		if (CanEverPropose(it->ePlayer))
 
 #endif
+
+		if (CanEverPropose(it->ePlayer))
 		{
 			int iVotes = CalculateStartingVotesForMember(it->ePlayer);
 			vpPossibleProposers.push_back(it, iVotes);
@@ -7474,8 +7498,7 @@ void CvLeagueAI::DoVotes(CvLeague* pLeague)
 #ifdef CVM_AI_NO_VOTES
 
 	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
-	   && !m_pPlayer->isHuman()
-	   && GC.getGame().isGameMultiPlayer()) {
+	   && !m_pPlayer->isHuman()) {
 		return;
 	}
 
@@ -7509,8 +7532,7 @@ void CvLeagueAI::DoProposals(CvLeague* pLeague)
 #ifdef CVM_AI_NO_VOTES
 
 	if (  GC.getGame().isOption("GAMEOPTION_AI_NO_VOTES")
-	   && !m_pPlayer->isHuman()
-	   && GC.getGame().isGameMultiPlayer()) {
+	   && !m_pPlayer->isHuman()) {
 		return;
 	}
 

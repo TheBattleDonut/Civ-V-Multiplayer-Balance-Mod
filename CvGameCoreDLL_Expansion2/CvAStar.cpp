@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -1369,6 +1369,7 @@ int PathValid(CvAStarNode* parent, CvAStarNode* node, int data, const void* poin
 		}
 	}
 
+#ifndef CVM_NO_RADAR
 	if(!bUnitIsCombat && unit_domain_type != DOMAIN_AIR)
 	{
 		const PlayerTypes eUnitPlayer = unit_owner;
@@ -1382,11 +1383,16 @@ int PathValid(CvAStarNode* parent, CvAStarNode* node, int data, const void* poin
 			}
 		}
 	}
+#endif
 
 	// slewis - Added to catch when the unit is adjacent to an enemy unit while it is stacked with a friendly unit.
 	//          The logic above (with bPreviousNodeHostile) catches this problem with a path that's longer than one step
 	//          but does not catch when the path is only one step.
+#ifdef CVM_NO_RADAR
+	if (unit_domain_type != DOMAIN_AIR && pUnitPlot->isAdjacent(pToPlot) && kToNodeCacheData.bContainsVisibleEnemy && !(iFinderIgnoreStacking))
+#else
 	if(bUnitIsCombat && unit_domain_type != DOMAIN_AIR && pUnitPlot->isAdjacent(pToPlot) && kToNodeCacheData.bContainsVisibleEnemy && !(iFinderIgnoreStacking))
+#endif
 	{
 		if(kToNodeCacheData.bContainsVisibleEnemyDefender)
 		{
@@ -3471,6 +3477,7 @@ int TacticalAnalysisMapPathValid(CvAStarNode* parent, CvAStarNode* node, int dat
 		}
 	}
 
+#ifndef CVM_NO_RADAR
 	if(!bUnitIsCombat && unit_domain_type != DOMAIN_AIR)
 	{
 		const PlayerTypes eUnitPlayer = unit_owner;
@@ -3484,11 +3491,16 @@ int TacticalAnalysisMapPathValid(CvAStarNode* parent, CvAStarNode* node, int dat
 			}
 		}
 	}
+#endif
 
 	// slewis - Added to catch when the unit is adjacent to an enemy unit while it is stacked with a friendly unit.
 	//          The logic above (with bPreviousNodeHostile) catches this problem with a path that's longer than one step
 	//          but does not catch when the path is only one step.
+#ifdef CVM_NO_RADAR
+	if (unit_domain_type != DOMAIN_AIR && pUnitPlot->isAdjacent(pToPlot) && kToNodeCacheData.bContainsVisibleEnemy && !(iFinderIgnoreStacking))
+#else
 	if(bUnitIsCombat && unit_domain_type != DOMAIN_AIR && pUnitPlot->isAdjacent(pToPlot) && kToNodeCacheData.bContainsVisibleEnemy && !(iFinderIgnoreStacking))
+#endif
 	{
 		if(kToNodeCacheData.bContainsVisibleEnemyDefender)
 		{

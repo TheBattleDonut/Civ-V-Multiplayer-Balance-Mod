@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -60,6 +60,11 @@ public:
 	void SetTurnMadePeaceTreatyWithTeam(TeamTypes eTeam, int iNewValue);
 	bool IsHasBrokenPeaceTreaty() const;
 	void SetHasBrokenPeaceTreaty(bool bValue);
+
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+	int GetTurnCsBoughtFromMajorCiv(TeamTypes eTeam) const;
+	void SetTurnCsBoughtFromMajorCiv(TeamTypes eTeam, int iNewValue);
+#endif
 
 	void meet(TeamTypes eTeam, bool bSuppressMessages);
 
@@ -459,6 +464,9 @@ protected:
 	Firaxis::Array< int, REALLY_MAX_TEAMS > m_aiNumTurnsLockedIntoWar;
 	Firaxis::Array< int, NUM_DOMAIN_TYPES > m_aiExtraMoves;
 	Firaxis::Array< int, REALLY_MAX_TEAMS > m_paiTurnMadePeaceTreatyWithTeam;
+#ifdef CVM_NO_WAR_AFTER_CS_ALLIED
+	Firaxis::Array< int, REALLY_MAX_TEAMS > d_csBoughtFromMajorCiv;
+#endif
 	Firaxis::Array< int, REALLY_MAX_TEAMS > m_aiIgnoreWarningCount;
 
 	Firaxis::Array< bool, REALLY_MAX_PLAYERS > m_abHasFoundPlayersTerritory;
