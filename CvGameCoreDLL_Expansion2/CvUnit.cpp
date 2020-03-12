@@ -19593,14 +19593,6 @@ void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFla
 	}
 #endif
 
-#ifdef CVM_NO_INPUT_TURN_ROLL_OVER
-
-	if (GET_PLAYER(getOwner()).isEndTurn() && (!gDLL->allAICivsProcessedThisTurn() || !GC.getGame().allUnitAIProcessed())) {
-		return;
-	}
-
-#endif
-
 #ifdef CVM_NO_SHIFT_MOVE
 
 	if (gDLL->shiftKey()) {
