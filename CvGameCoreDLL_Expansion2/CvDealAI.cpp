@@ -131,6 +131,12 @@ DealOfferResponseTypes CvDealAI::DoHumanOfferDealToThisAI(CvDeal* pDeal)
 
 #endif
 
+#ifdef CVM_AI_NO_WAR_DECLARATION
+	if (GC.getGame().isOption("GAMEOPTION_AI_NO_WAR_DECLARATION") && pDeal->IsPeaceTreatyTrade(eFromPlayer)) {
+		bDealAcceptable = true;
+	}
+#endif
+
 	if(bDealAcceptable)
 	{
 		CvDeal kDeal = *pDeal;
