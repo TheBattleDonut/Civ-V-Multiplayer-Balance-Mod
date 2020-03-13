@@ -8407,6 +8407,11 @@ void CvGame::updateMoves()
 				CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
 				if(!player.isTurnActive() && player.isHuman() && player.isAlive() && player.isSimultaneousTurns())
 				{
+#ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
+					if (getActivePlayer() == player.GetID()) {
+						GAMEEVENTINVOKE_HOOK(GAMEEVENT_WorldTurnStart);
+					}
+#endif
 					player.setTurnActive(true);
 				}
 			}

@@ -46,8 +46,6 @@
 #include <crtdbg.h>
 #endif
 
-#include "_CVMDefines.h"
-
 #include <algorithm>
 #include <vector>
 #include <list>
@@ -95,6 +93,8 @@ typedef wchar_t          wchar;
 #include <FireWorks/FAStarNode.h>
 #include <Fireworks/Win32/FKBInputDevice.h>
 #include <Fireworks/FFastList.h>
+
+#include "_CVMDefines.h"
 
 #include "CvGameDatabase.h"
 #include "CvGameCoreDLLUtil.h"

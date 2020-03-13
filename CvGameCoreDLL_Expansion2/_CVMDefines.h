@@ -27,6 +27,7 @@
 #define CVM_NO_IMPROVEMENT_IN_ENNEMY_TERRITORY_AT_WAR
 #define CVM_NO_WAR_AFTER_CS_ALLIED
 #define CVM_PAUSE_AFTER_DISCONNECT
+#define CVM_NO_INPUT_DURING_TURN_ROLL_OVER
 
 // Removals
 #define CVM_BAN_OBSERVATORIES
@@ -43,4 +44,29 @@
 // Civ changes
 #define CVM_IROQUOIS_UA_FIX // Fix Iroquois movement from forest to road
 
+// Game Event wrappers
+#include "Lua\CvLuaSupport.h"
+#define GAMEEVENTINVOKE_HOOK gCustomMods.eventHook
+
+#define GAMEEVENTRETURN_NONE  -1
+#define GAMEEVENTRETURN_FALSE  0
+#define GAMEEVENTRETURN_TRUE   1
+#define GAMEEVENTRETURN_HOOK   GAMEEVENTRETURN_TRUE
+#define GAMEEVENTRETURN_VALUE  GAMEEVENTRETURN_TRUE
+
+#define GAMEEVENT_WorldTurnStart "WorldTurnStart", ""
+#define GAMEEVENT_WorldTurnEnd   "WorldTurnEnd",   ""
+
+class CustomMods {
+public:
+    CustomMods();
+
+    int eventHook(const char* szName, const char* p, ...);
+    int eventTestAll(const char* szName, const char* p, ...);
+
+    int eventHook(const char* szName, CvLuaArgsHandle &args);
+    int eventTestAll(const char* szName, CvLuaArgsHandle &args);
+};
+
+extern CustomMods gCustomMods;
 #endif

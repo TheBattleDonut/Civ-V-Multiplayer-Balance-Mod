@@ -13,10 +13,10 @@ local bEatNextUp = false;
 
 local pathBorderStyle = "MovementRangeBorder";
 local attackPathBorderStyle = "AMRBorder"; -- attack move
-local bIsTurnEnd = false;
-local bTurnStarted = false;
-local iBlockAt = 5;
-local iStartAt = 0;
+
+-- No input during turn roll over
+local bBlockInput = false;
+--
 
 function UpdatePathFromSelectedUnitToMouse()
 	local interfaceMode = UI.GetInterfaceMode();
@@ -141,7 +141,6 @@ end
 
 -- Emergency key up handler
 function KeyUpHandler( wParam )
-	
 	if ( wParam == Keys.VK_LEFT ) then
 		Events.SerialEventCameraStopMovingLeft();
 	elseif ( wParam == Keys.VK_RIGHT ) then
@@ -343,11 +342,11 @@ function( wParam, lParam )
 		UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
 		return true;
 	elseif (wParam == Keys.VK_NUMPAD1 or wParam == Keys.VK_NUMPAD3 or wParam == Keys.VK_NUMPAD4 or wParam == Keys.VK_NUMPAD6 or wParam == Keys.VK_NUMPAD7 or wParam == Keys.VK_NUMPAD8 ) then
-		
-		if bIsTurnEnd == true then
+		-- No input during turn roll over
+		if bBlockInput == true then
 			return;
 		end
-
+		--
 		UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
 		return DefaultMessageHandler[KeyEvents.KeyDown]( wParam, lParam );
 	else
@@ -362,11 +361,11 @@ function( wParam, lParam )
 		UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
 		return true;
 	elseif (wParam == Keys.VK_NUMPAD1 or wParam == Keys.VK_NUMPAD3 or wParam == Keys.VK_NUMPAD4 or wParam == Keys.VK_NUMPAD6 or wParam == Keys.VK_NUMPAD7 or wParam == Keys.VK_NUMPAD8 ) then
-		
-		if bIsTurnEnd == true then
+		-- No input during turn roll over
+		if bBlockInput == true then
 			return;
 		end
-
+		--
 		UI.ClearSelectedCities();
 		UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
 		return DefaultMessageHandler[KeyEvents.KeyDown]( wParam, lParam );
@@ -377,17 +376,17 @@ end
 
 -- this is a default handler for all Interface Modes that correspond to a mission
 function missionTypeLButtonUpHandler( wParam, lParam )
-
-	if bIsTurnEnd == true then
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
 	if plot then
 		local plotX = plot:GetX();
 		local plotY = plot:GetY();
 		local bShift = UIManager:GetShift();
-		bShift = false;
 		local interfaceMode = UI.GetInterfaceMode();
 		local eInterfaceModeMission = GameInfoTypes[GameInfo.InterfaceModes[interfaceMode].Mission];
 		if eInterfaceModeMission ~= MissionTypes.NO_MISSION then
@@ -428,17 +427,17 @@ end
 
 
 function AirStrike( wParam, lParam )
-
-	if bIsTurnEnd == true then
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
 	local plotX = plot:GetX();
 	local plotY = plot:GetY();
 	local pHeadSelectedUnit = UI.GetHeadSelectedUnit();
 	local bShift = UIManager:GetShift();
-	bShift = false;
 	local interfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK;
 	
 	-- Don't let the user do a ranged attack on a plot that contains some fighting.
@@ -482,17 +481,17 @@ end
 
 
 function RangeAttack( wParam, lParam )
-
-	if bIsTurnEnd == true then
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
 	local plotX = plot:GetX();
 	local plotY = plot:GetY();
 	local pHeadSelectedUnit = UI.GetHeadSelectedUnit();
 	local bShift = UIManager:GetShift();
-	bShift = false;
 	local interfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK;
 	
 	-- Don't let the user do a ranged attack on a plot that contains some fighting.
@@ -538,7 +537,6 @@ function CityBombard( wParam, lParam )
 	local plotY = plot:GetY();
 	local pHeadSelectedCity = UI.GetHeadSelectedCity();
 	local bShift = UIManager:GetShift();
-	bShift = false;
 	local interfaceMode = InterfaceModeTypes.INTERFACEMODE_CITY_RANGE_ATTACK;
 	
 	-- Don't let the user do a ranged attack on a plot that contains some fighting.
@@ -576,17 +574,17 @@ function ( wParam, lParam )
 end
 
 function EmbarkInputHandler( wParam, lParam )
-
-	if bIsTurnEnd == true then
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
 	local plotX = plot:GetX();
 	local plotY = plot:GetY();
 	local pHeadSelectedUnit = UI.GetHeadSelectedUnit();
 	local bShift = UIManager:GetShift();
-	bShift = false;
 
 	if pHeadSelectedUnit then
 		if (pHeadSelectedUnit:CanEmbarkOnto(pHeadSelectedUnit:GetPlot(), plot)) then
@@ -605,17 +603,17 @@ if (UI.IsTouchScreenEnabled()) then
 end
 
 function DisembarkInputHandler( wParam, lParam )
-
-	if bIsTurnEnd == true then
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
 	local plotX = plot:GetX();
 	local plotY = plot:GetY();
 	local pHeadSelectedUnit = UI.GetHeadSelectedUnit();
 	local bShift = UIManager:GetShift();
-	bShift = false;
 
 	if pHeadSelectedUnit then
 		if (pHeadSelectedUnit:CanDisembarkOnto(plot)) then
@@ -658,11 +656,15 @@ end
 
 InterfaceModeMessageHandler[InterfaceModeTypes.INTERFACEMODE_SELECTION][MouseEvents.RButtonDown] = 
 function( wParam, lParam )
-	if bIsTurnEnd == false then
-		ShowMovementRangeIndicator();
-		UI.SendPathfinderUpdate();
-		UpdatePathFromSelectedUnitToMouse();
+	-- No input during turn roll over
+	if bBlockInput == true then
+		return;
 	end
+	--
+
+	ShowMovementRangeIndicator();
+	UI.SendPathfinderUpdate();
+	UpdatePathFromSelectedUnitToMouse();
 end
 
 if (UI.IsTouchScreenEnabled()) then
@@ -688,12 +690,14 @@ end
 
 
 function MovementRButtonUp( wParam, lParam )
-	
-	if bIsTurnEnd == true then
-		return;
-	end
-
 	if( bEatNextUp == true ) then
+
+		-- No input during turn roll over
+		if bBlockInput == true then
+			return;
+		end
+		--
+
         bEatNextUp = false;
         return;
     end
@@ -701,7 +705,6 @@ function MovementRButtonUp( wParam, lParam )
     	UI.SetInterfaceMode( InterfaceModeTypes.INTERFACEMODE_SELECTION );
     end
 	local bShift = UIManager:GetShift();
-	bShift = false;
 	local bAlt = UIManager:GetAlt();
 	local bCtrl = UIManager:GetControl();
 	local plot = Map.GetPlot( UI.GetMouseOverHex() );
@@ -845,10 +848,11 @@ function InputHandler( uiMsg, wParam, lParam )
 		rButtonDown = false;
 	end
 
-	if bIsTurnEnd then
-		rButtonDown = false;
+	-- No input during turn roll over
+	if bBlockInput == true then
 		return;
 	end
+	--
 
 	if( UI.IsTouchScreenEnabled() and uiMsg == MouseEvents.PointerDown ) then
 	    if( UIManager:GetNumPointers() > 1 ) then
@@ -953,85 +957,16 @@ function OnMultiplayerGameLastPlayer()
 end
 Events.MultiplayerGameLastPlayer.Add( OnMultiplayerGameLastPlayer );
 
------------------------------------------------------
-
-function OnActivePlayerTurnEnd()
-	bIsTurnEnd = true;
+-- No inputs during turn roll over
+function OnWorldTurnEnd()
+	bBlockInput = true;
 	rButtonDown = false;
 	ClearAllHighlights();
 	Events.DisplayMovementIndicator( false );
-	--print("World View Is Turn End: " .. tostring(bIsTurnEnd));
 end
-Events.ActivePlayerTurnEnd.Add( OnActivePlayerTurnEnd );
-
------------------------------------------------------
-
---------------------------------------------------------------------------------
---function OnActivePlayerTurnStart()
---	bIsTurnEnd = false;
---	ClearAllHighlights();
---	Events.DisplayMovementIndicator( false );
-  --  print("World View Is Turn End: " .. tostring(bIsTurnEnd));
---end
---Events.ActivePlayerTurnStart.Add( OnActivePlayerTurnStart );
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-function TimerStarted(percentComplete)
-
-	local turn = Game.GetGameTurn();
-
-	if turn == 0 then
-		return;
-	end
-
-	local timeLeft = math.ceil(getEndTurnTimerLength() - (getEndTurnTimerLength() * percentComplete));
-	local timeComplete = math.floor(getEndTurnTimerLength() - timeLeft);
-
-	if timeLeft < 1 then
-		timeLeft = 0;
-		bTurnStarted = true;
-	end
-
-	if (timeLeft < iBlockAt) and (bIsTurnEnd == false) then
-		bIsTurnEnd = true;
-		rButtonDown = false;
-		ClearAllHighlights();
-		Events.DisplayMovementIndicator( false );
-
-	elseif (timeComplete > iStartAt) and (bTurnStarted == true) and (bIsTurnEnd == true) then
-		bIsTurnEnd = false;
-		bTurnStarted = false;
-		ClearAllHighlights();
-		Events.DisplayMovementIndicator( false );
-	end
+function OnWorldTurnStart()
+	bBlockInput = false;
 end
-
-Events.EndTurnTimerUpdate.Add( TimerStarted );
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
---[[
-function SendModInstalledMessage()
-	local text = "TTM v2.1!"
-	Network.SendChat( text, -1, -1 );
-end
-
-Events.LoadScreenClose.Add( SendModInstalledMessage );
---]]
---------------------------------------------------------------------------------
-
---[[
-function TurnTimerUpdateWorldView(percentComplete)
-
-	local timeLeft = math.ceil(getEndTurnTimerLength() - (getEndTurnTimerLength() * percentComplete));
-
-	if timeLeft < 5 then
-        bIsTurnEnd = true;
-		rButtonDown = false;
-    	print("World View Is Turn End Less Than 5: " .. tostring(bIsTurnEnd));
-	end
-end
-Events.EndTurnTimerUpdate.Add(TurnTimerUpdateWorldView);
---------------------------------------------------------------------------------
--]]
+GameEvents.WorldTurnStart.Add( OnWorldTurnStart );
+GameEvents.WorldTurnEnd.Add( OnWorldTurnEnd );
+--
