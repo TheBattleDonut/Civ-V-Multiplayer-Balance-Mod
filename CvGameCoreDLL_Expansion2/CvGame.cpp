@@ -86,9 +86,6 @@ CvGameInitialItemsOverrides::CvGameInitialItemsOverrides()
 //------------------------------------------------------------------------------
 CvGame::CvGame() :
 	m_jonRand(false)
-#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-	, F11Down(false)
-#endif
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
 	, playerDisconnected(0)
 #endif
@@ -1582,6 +1579,9 @@ void CvGame::CheckPlayerTurnDeactivate()
 				{
 #ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
 					if (getActivePlayer() == player.GetID()) {
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+						resetTurnTimer(true);
+#endif
 						GAMEEVENTINVOKE_HOOK(GAMEEVENT_WorldTurnStart);
 					}
 #endif
@@ -1910,21 +1910,19 @@ bool CvGame::hasTurnTimerExpired(PlayerTypes playerID)
 		ICvUserInterface2* iface = GC.GetEngineUserInterface();
 		if(getElapsedGameTurns() > 0)
 		{
-#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-			if(  (isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()) && GET_PLAYER(playerID).isEndTurn())
-			  || (F11Down && playerID == 0))
-#else
 			if(isLocalPlayer && (!gDLL->allAICivsProcessedThisTurn() || !allUnitAIProcessed()))
-#endif
 			{//the turn timer doesn't doesn't start until all ai processing has been completed for this game turn.
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+				if (!isOption(GAMEOPTION_SIMULTANEOUS_TURNS)) {
+					resetTurnTimer(true);
+				}
+#else
 				resetTurnTimer(true);
+#endif
 
 				//hold the turn timer at 0 seconds with 0% completion
 				CvPreGame::setEndTurnTimerLength(0.0f);
 				iface->updateEndTurnTimer(0.0f);
-#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-				F11Down = false;
-#endif
 			}
 			else
 			{//turn timer is actively ticking.
@@ -3034,12 +3032,6 @@ void CvGame::handleAction(int iAction)
 	// Control
 	CvActionInfo* pkActionInfo = GC.getActionInfo(iAction);
 
-#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-	if (pkActionInfo->getControlType() == 27) {
-		F11Down = true;
-	}
-#endif
-
 	if(pkActionInfo->getControlType() != NO_CONTROL)
 	{
 		doControl((ControlTypes)(pkActionInfo->getControlType()));
@@ -3636,6 +3628,12 @@ void CvGame::doControl(ControlTypes eControl)
 		CvPopupInfo kPopup(BUTTONPOPUP_NOTIFICATION_LOG, getActivePlayer());
 		kPopup.iData1 = 1;
 		GC.GetEngineUserInterface()->AddPopup(kPopup);
+
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+		if (gDLL->IsHost()) {
+			resetTurnTimer(true);
+		}
+#endif
 	}
 	break;
 
@@ -7578,7 +7576,13 @@ void CvGame::doTurn()
 
 	//We reset the turn timer now so that we know that the turn timer has been reset at least once for
 	//this turn.  CvGameController::Update() will continue to reset the timer if there is prolonged ai processing.
+#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
+	if (!isOption(GAMEOPTION_SIMULTANEOUS_TURNS)) {
+		resetTurnTimer(true);
+	}
+#else
 	resetTurnTimer(true);
+#endif
 
 	// If player unit cycling has been canceled for this turn, set it back to normal for the next
 	GC.GetEngineUserInterface()->setNoSelectionListCycle(false);

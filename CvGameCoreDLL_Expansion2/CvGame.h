@@ -709,10 +709,6 @@ protected:
 	CvRandom m_mapRand;
 	CvRandom m_jonRand;
 
-#ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
-	bool F11Down;
-#endif
-
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
 	int playerDisconnected;
 #endif
