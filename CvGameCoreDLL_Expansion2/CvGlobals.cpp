@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -42,6 +42,10 @@
 #include "CvDllPlot.h"
 #include "CvDllRandom.h"
 #include "CvDllUnit.h"
+
+#ifdef GAK_DEBUG_MINIDUMP
+	#include <dbghelp.h>
+#endif
 
 // must be included after all other headers
 #include "LintFree.h"
@@ -1817,11 +1821,57 @@ CvGlobals::~CvGlobals()
 {
 }
 
+#ifdef GAK_DEBUG_MINIDUMP
+
+/************************************************************************************************/
+/* MINIDUMP_MOD                           04/10/11                                terkhen       */
+/* See http://www.debuginfo.com/articles/effminidumps.html                                      */
+/*                                                                                              */
+/* Originally for Civ 4, ported by ls612 to Civ 5                                               */
+/* See http://forums.civfanatics.com/showthread.php?t=498919                                    */
+/************************************************************************************************/
+
+#pragma comment (lib, "dbghelp.lib")
+void CreateMiniDump(EXCEPTION_POINTERS *pep)
+{
+	/* Open a file to store the minidump. */
+	HANDLE hFile = CreateFile(_T("CvMiniDump.dmp"), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if((hFile == NULL) || (hFile == INVALID_HANDLE_VALUE)) {
+		_tprintf(_T("CreateFile failed. Error: %u \n"), GetLastError());
+		return;
+	}
+
+	/* Create the minidump. */
+	MINIDUMP_EXCEPTION_INFORMATION mdei;
+	mdei.ThreadId           = GetCurrentThreadId();
+	mdei.ExceptionPointers  = pep;
+	mdei.ClientPointers     = FALSE;
+
+	MINIDUMP_TYPE mdt       = MiniDumpNormal;
+
+	MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, mdt, (pep != NULL) ? &mdei : NULL, NULL, NULL);
+
+	CloseHandle(hFile);
+}
+
+LONG WINAPI CustomFilter(EXCEPTION_POINTERS *ExceptionInfo)
+{
+	CreateMiniDump(ExceptionInfo);
+	return EXCEPTION_EXECUTE_HANDLER;
+}
+
+#endif
+
 //
 // allocate
 //
 void CvGlobals::init()
 {
+#ifdef GAK_DEBUG_MINIDUMP
+	SetUnhandledExceptionFilter(CustomFilter);
+#endif
+
+
 	//
 	// These vars are used to initialize the globals.
 	//
