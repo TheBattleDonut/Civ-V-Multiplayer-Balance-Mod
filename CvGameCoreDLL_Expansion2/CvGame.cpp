@@ -1538,6 +1538,60 @@ void CvGame::update()
 //	and all activity has been completed.
 void CvGame::CheckPlayerTurnDeactivate()
 {
+#ifdef CVM_PLAYER_ACTIVATION_MOVED_TO_UPDATE
+	bool pendingAI = false;
+	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
+		if (player.isAlive() && player.isTurnActive() && !player.isHuman())
+		{
+			pendingAI = true;
+			break;
+		}
+	}
+
+	bool activatePlayers = !pendingAI && m_lastTurnAICivsProcessed != getGameTurn();
+	if (activatePlayers)
+	{
+		SetLastTurnAICivsProcessed();
+		if (isOption(GAMEOPTION_DYNAMIC_TURNS) || isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
+		{//Activate human players who are playing simultaneous turns now that we've finished moves for the AI.
+#ifdef CVM_RANDOMIZE_TURN_ACTIVATION_ORDER
+			int iI;
+			int aiShuffle[MAX_PLAYERS];
+			if (GC.getGame().isOption("GAMEOPTION_RANDOMIZE_TURN_ACTIVATION_ORDER")) {
+				shuffleArray(aiShuffle, MAX_PLAYERS, getJonRand());
+			} else {
+				for (iI = 0; iI < MAX_PLAYERS; iI++) {
+					aiShuffle[iI] = iI;
+				}
+			}
+
+			for (int iJ = 0; iJ < MAX_PLAYERS; iJ++) {
+				iI = aiShuffle[iJ];
+
+
+#else
+
+			for(int iI = 0; iI < MAX_PLAYERS; iI++) {
+
+#endif
+
+				CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
+				if(!player.isTurnActive() && player.isHuman() && player.isAlive() && player.isSimultaneousTurns())
+				{
+#ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
+					if (getActivePlayer() == player.GetID()) {
+						GAMEEVENTINVOKE_HOOK(GAMEEVENT_WorldTurnStart);
+					}
+#endif
+					player.setTurnActive(true);
+				}
+			}
+		}
+	}
+#endif
+
 	for(int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
 		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
@@ -8123,7 +8177,9 @@ void CvGame::updateMoves()
 	// If no AI with an active turn, check humans.
 	if(playersToProcess.empty())
 	{
+#ifndef CVM_PLAYER_ACTIVATION_MOVED_TO_UPDATE
 		SetLastTurnAICivsProcessed();
+#endif
 		if(gDLL->allAICivsProcessedThisTurn())
 		{//everyone is finished processing the AI civs.
 			PlayerTypes eActivePlayer = getActivePlayer();
@@ -8376,47 +8432,23 @@ void CvGame::updateMoves()
 			}
 		}
 	}
-
+#ifndef CVM_PLAYER_ACTIVATION_MOVED_TO_UPDATE
 	if(activatePlayers)
 	{
 		if (isOption(GAMEOPTION_DYNAMIC_TURNS) || isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
 		{//Activate human players who are playing simultaneous turns now that we've finished moves for the AI.
 			// KWG: This code should go into CheckPlayerTurnDeactivate
-
-#ifdef CVM_RANDOMIZE_TURN_ACTIVATION_ORDER
-
-			int aiShuffle[MAX_PLAYERS];
-			if (GC.getGame().isOption("GAMEOPTION_RANDOMIZE_TURN_ACTIVATION_ORDER")) {
-				shuffleArray(aiShuffle, MAX_PLAYERS, getJonRand());
-			} else {
-				for (iI = 0; iI < MAX_PLAYERS; iI++) {
-					aiShuffle[iI] = iI;
-				}
-			}
-
-			for (int iJ = 0; iJ < MAX_PLAYERS; iJ++) {
-				iI = aiShuffle[iJ];
-
-
-#else
-
 			for(iI = 0; iI < MAX_PLAYERS; iI++) {
-
-#endif
 
 				CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
 				if(!player.isTurnActive() && player.isHuman() && player.isAlive() && player.isSimultaneousTurns())
 				{
-#ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
-					if (getActivePlayer() == player.GetID()) {
-						GAMEEVENTINVOKE_HOOK(GAMEEVENT_WorldTurnStart);
-					}
-#endif
 					player.setTurnActive(true);
 				}
 			}
 		}
 	}
+#endif
 }
 
 //	-----------------------------------------------------------------------------------------------

@@ -41,6 +41,9 @@
 #define CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
 #define CVM_PATRONAGE_FINISHER_GIFTED_GREAT_PEOPLE
 
+// Refactor
+#define CVM_PLAYER_ACTIVATION_MOVED_TO_UPDATE
+
 // Civ changes
 #define CVM_IROQUOIS_UA_FIX // Fix Iroquois movement from forest to road
 
