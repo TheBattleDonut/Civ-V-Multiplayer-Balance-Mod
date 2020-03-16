@@ -60,8 +60,8 @@
 #define GAMEEVENTRETURN_HOOK   GAMEEVENTRETURN_TRUE
 #define GAMEEVENTRETURN_VALUE  GAMEEVENTRETURN_TRUE
 
-#define GAMEEVENT_WorldTurnStart "WorldTurnStart", ""
-#define GAMEEVENT_WorldTurnEnd   "WorldTurnEnd",   ""
+#define GAMEEVENT_EnableInput  "EnableInput", ""
+#define GAMEEVENT_DisableInput "DisableInput", ""
 
 class CustomMods {
 public:

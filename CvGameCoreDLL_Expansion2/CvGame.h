@@ -565,23 +565,6 @@ public:
 	int GetNumArchaeologySites() const;
 	int GetNumHiddenArchaeologySites() const;
 
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	int getPlayerDisconnected() const {
-		return playerDisconnected;
-	}
-
-	void incrementPlayerDisconnected() {
-		playerDisconnected++;
-	}
-
-	void decrementPlayerDisconnected() {
-		playerDisconnected--;
-		if (playerDisconnected < 0) {
-			playerDisconnected = 0;
-		}
-	}
-#endif
-
 public:
 
 	//Function to determine city size from city population
@@ -711,10 +694,6 @@ protected:
 
 #ifdef CVM_DISABLE_TURN_TIMER_RESET_ON_AUTOMATION
 	bool F11Down;
-#endif
-
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-	int playerDisconnected;
 #endif
 
 	typedef std::vector<CvReplayMessage> ReplayMessageList;

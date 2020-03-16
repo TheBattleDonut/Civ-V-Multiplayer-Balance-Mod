@@ -16082,7 +16082,7 @@ void CvPlayer::setEndTurn(bool bNewValue)
 		if (!gDLL->HasReceivedTurnAllCompleteFromAllPlayers()) {
 			return;
 		} else if(CvPreGame::activePlayer() == GetID()) {
-			GAMEEVENTINVOKE_HOOK(GAMEEVENT_WorldTurnEnd);
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_DisableInput);
 		}
 	}
 #else
@@ -24581,14 +24581,13 @@ void CvPlayer::disconnected()
 			}
 
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
-		if (!isObserver()) {
-			if (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())) {
-				GC.getGame().decrementPlayerDisconnected();
+		if (isSimultaneousTurns() && !isObserver() && !gDLL->IsPlayerKicked(GetID())) {
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_DisableInput);
+		}
+#endif
 
-#else
 		if(!isObserver() && (!CvPreGame::isPitBoss() || gDLL->IsPlayerKicked(GetID())))
 		{
-#endif
 			// JAR : First pass, automatically fall back to CPU so the
 			// game can continue. Todo : add popup on host asking whether
 			// the AI should take over or everyone should wait for the
@@ -24604,15 +24603,6 @@ void CvPlayer::disconnected()
 				checkRunAutoMovesForEveryone();
 			}
 		}
-#ifdef CVM_PAUSE_AFTER_DISCONNECT
-			else if (  isAlive()
-					&& isTurnActive()
-					&& (GC.getGame().isOption(GAMEOPTION_DYNAMIC_TURNS) || GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
-					&& !gDLL->IsPlayerKicked(GetID())) {
-						GC.getGame().incrementPlayerDisconnected();
-			}
-		}
-#endif
 	}
 }
 //	-----------------------------------------------------------------------------------------------
@@ -24642,7 +24632,9 @@ void CvPlayer::reconnected()
 		}
 
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
-		GC.getGame().decrementPlayerDisconnected();
+		if (isSimultaneousTurns() && CvPreGame::slotStatus(GetID()) != SS_OBSERVER) {
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_EnableInput);
+		}
 #endif
 
 	}

@@ -15,7 +15,7 @@ local pathBorderStyle = "MovementRangeBorder";
 local attackPathBorderStyle = "AMRBorder"; -- attack move
 
 -- No input during turn roll over
-local bBlockInput = false;
+local bBlockInput = 0;
 --
 
 function UpdatePathFromSelectedUnitToMouse()
@@ -343,7 +343,7 @@ function( wParam, lParam )
 		return true;
 	elseif (wParam == Keys.VK_NUMPAD1 or wParam == Keys.VK_NUMPAD3 or wParam == Keys.VK_NUMPAD4 or wParam == Keys.VK_NUMPAD6 or wParam == Keys.VK_NUMPAD7 or wParam == Keys.VK_NUMPAD8 ) then
 		-- No input during turn roll over
-		if bBlockInput == true then
+		if bBlockInput > 0 then
 			return;
 		end
 		--
@@ -362,7 +362,7 @@ function( wParam, lParam )
 		return true;
 	elseif (wParam == Keys.VK_NUMPAD1 or wParam == Keys.VK_NUMPAD3 or wParam == Keys.VK_NUMPAD4 or wParam == Keys.VK_NUMPAD6 or wParam == Keys.VK_NUMPAD7 or wParam == Keys.VK_NUMPAD8 ) then
 		-- No input during turn roll over
-		if bBlockInput == true then
+		if bBlockInput > 0 then
 			return;
 		end
 		--
@@ -377,7 +377,7 @@ end
 -- this is a default handler for all Interface Modes that correspond to a mission
 function missionTypeLButtonUpHandler( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -428,7 +428,7 @@ end
 
 function AirStrike( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -482,7 +482,7 @@ end
 
 function RangeAttack( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -575,7 +575,7 @@ end
 
 function EmbarkInputHandler( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -604,7 +604,7 @@ end
 
 function DisembarkInputHandler( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -657,7 +657,7 @@ end
 InterfaceModeMessageHandler[InterfaceModeTypes.INTERFACEMODE_SELECTION][MouseEvents.RButtonDown] = 
 function( wParam, lParam )
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -693,7 +693,7 @@ function MovementRButtonUp( wParam, lParam )
 	if( bEatNextUp == true ) then
 
 		-- No input during turn roll over
-		if bBlockInput == true then
+		if bBlockInput > 0 then
 			return;
 		end
 		--
@@ -849,7 +849,7 @@ function InputHandler( uiMsg, wParam, lParam )
 	end
 
 	-- No input during turn roll over
-	if bBlockInput == true then
+	if bBlockInput > 0 then
 		return;
 	end
 	--
@@ -958,15 +958,18 @@ end
 Events.MultiplayerGameLastPlayer.Add( OnMultiplayerGameLastPlayer );
 
 -- No inputs during turn roll over
-function OnWorldTurnEnd()
-	bBlockInput = true;
+function OnDisableInput()
+	bBlockInput = bBlockInput + 1;
 	rButtonDown = false;
 	ClearAllHighlights();
 	Events.DisplayMovementIndicator( false );
 end
-function OnWorldTurnStart()
-	bBlockInput = false;
+function OnEnableInput()
+	bBlockInput = bBlockInput - 1;
+	if bBlockInput < 0 then
+		bBlockInput = 0;
+	end
 end
-GameEvents.WorldTurnStart.Add( OnWorldTurnStart );
-GameEvents.WorldTurnEnd.Add( OnWorldTurnEnd );
+GameEvents.EnableInput.Add( OnEnableInput );
+GameEvents.DisableInput.Add( OnDisableInput );
 --
