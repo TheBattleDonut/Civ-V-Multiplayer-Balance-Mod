@@ -126,12 +126,8 @@ void CvUnitMovement::GetCostsForMove(const CvUnit* pUnit, const CvPlot* pFromPlo
 				CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
 				iRouteCost = pRoadInfo->getMovementCost() + kUnitTeam.getRouteChange(ROUTE_ROAD);
 				iRouteFlatCost = pRoadInfo->getFlatMovementCost() * iBaseMoves;
-			}
-
-			if (  toPlotUA
-		       && !pFromPlot->isValidRoute(pUnit)
-		       && !(eFromFeature == FEATURE_FOREST || eFromFeature == FEATURE_JUNGLE)
-		       && !bRiverCrossing) {
+			} else if (  toPlotUA
+		       		  && !bRiverCrossing) {
 
 				CvRouteInfo* pRoadInfo = GC.getRouteInfo(ROUTE_ROAD);
 				iRouteCost = pRoadInfo->getMovementCost();
