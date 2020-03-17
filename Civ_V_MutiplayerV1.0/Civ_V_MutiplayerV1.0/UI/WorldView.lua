@@ -973,3 +973,12 @@ end
 GameEvents.EnableInput.Add( OnEnableInput );
 GameEvents.DisableInput.Add( OnDisableInput );
 --
+
+-- Mod InstalledMessage
+function SendModInstalledMessage()
+	local text = "Civ V Multiplayer Discord Balance Mod v1."
+	Network.SendChat( text, -1, -1 );
+end
+
+Events.LoadScreenClose.Add( SendModInstalledMessage );
+--
