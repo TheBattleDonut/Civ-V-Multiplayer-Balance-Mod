@@ -70,9 +70,8 @@ function StartPlotSystem()
 	local start_plot_database = AssignStartingPlots.Create()
 	
 	print("Dividing the map in to Regions.");
-	-- Regional Division Method 1: Biggest Landmass
+	-- Regional Division Default Method: Continental
 	local args = {
-		method = 1,
 		resources = res,
 		};
 	start_plot_database:GenerateRegions(args)
