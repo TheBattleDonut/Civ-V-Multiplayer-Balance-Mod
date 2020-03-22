@@ -2172,7 +2172,12 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible,
 	CvBuildInfo& thisBuildInfo = *GC.getBuildInfo(eBuild);
 	if(thisBuildInfo.isRepair())
 	{
+#ifdef CVM_NO_IMPROVEMENT_IN_ENNEMY_TERRITORY_AT_WAR
+		bool inEnemyLands = (getTeam() != eTeam && getTeam() != NO_TEAM);
+		if ((IsImprovementPillaged() && !inEnemyLands) || IsRoutePillaged())
+#else
 		if(IsImprovementPillaged() || IsRoutePillaged())
+#endif
 		{
 			bValid = true;
 		}
