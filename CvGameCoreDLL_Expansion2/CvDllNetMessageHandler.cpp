@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -710,6 +710,11 @@ void CvDllNetMessageHandler::ResponsePushMission(PlayerTypes ePlayer, int iUnitI
 
 	if(pkUnit != NULL)
 	{
+
+#ifdef CVM_NO_SHIFT_MOVE
+		bShift = false;
+#endif
+
 		pkUnit->PushMission(eMission, iData1, iData2, iFlags, bShift, true);
 	}
 
@@ -933,6 +938,11 @@ void CvDllNetMessageHandler::ResponseSwapUnits(PlayerTypes ePlayer, int iUnitID,
 
 				if(pkUnit2 && pkUnit2->AreUnitsOfSameType(*pkUnit))
 				{
+
+#ifdef CVM_NO_SHIFT_MOVE
+					bShift = false;
+#endif
+
 					// Start the swap
 					pkUnit->PushMission(CvTypes::getMISSION_MOVE_TO(), iData1, iData2, MOVE_IGNORE_STACKING, bShift, true);
 

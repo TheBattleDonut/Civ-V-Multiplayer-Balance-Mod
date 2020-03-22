@@ -19586,14 +19586,6 @@ bool CvUnit::CanDoInterfaceMode(InterfaceModeTypes eInterfaceMode, bool bTestVis
 void CvUnit::PushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, CvPlot* pMissionAIPlot, CvUnit* pMissionAIUnit)
 {
 
-#ifdef CVM_NO_SHIFT_MOVE
-
-	if (gDLL->shiftKey()) {
-		return;
-	}
-
-#endif
-
 #ifdef CVM_NO_IMPROVEMENT_IN_ENNEMY_TERRITORY_AT_WAR
 
 	if (eMission == CvTypes::getMISSION_BUILD() && !IsInFriendlyTerritory()) {

@@ -2585,6 +2585,10 @@ void CvGame::selectionListGameNetMessage(int eMessage, int iData2, int iData3, i
 	auto_ptr<ICvUnit1> pSelectedUnit(GC.GetEngineUserInterface()->GetHeadSelectedUnit());
 	CvUnit* pkSelectedUnit = GC.UnwrapUnitPointer(pSelectedUnit.get());
 
+#ifdef CVM_NO_SHIFT_MOVE
+		bShift = false;
+#endif
+
 	if(pkSelectedUnit != NULL)
 	{
 		if(pkSelectedUnit->getOwner() == getActivePlayer() && !pSelectedUnit->IsBusy())
