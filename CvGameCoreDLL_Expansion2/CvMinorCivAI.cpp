@@ -5654,7 +5654,7 @@ void CvMinorCivAI::SetAlly(PlayerTypes eNewAlly)
 	m_iTurnAllied = GC.getGame().getGameTurn();
 
 #ifdef CVM_NO_WAR_AFTER_CS_ALLIED
-	if (eOldAlly != NO_PLAYER) {
+	if (eOldAlly != NO_PLAYER && m_eAlly != NO_PLAYER) {
 		CvTeam* newAlly = &GET_TEAM(GET_PLAYER(m_eAlly).getTeam());
 		CvTeam* oldAlly = &GET_TEAM(GET_PLAYER(eOldAlly).getTeam());
 		newAlly->SetTurnCsBoughtFromMajorCiv(GET_PLAYER(eOldAlly).getTeam(), m_iTurnAllied);
