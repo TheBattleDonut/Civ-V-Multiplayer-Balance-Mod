@@ -24581,11 +24581,10 @@ void CvPlayer::disconnected()
 			}
 
 #ifdef CVM_PAUSE_AFTER_DISCONNECT
-		if (isSimultaneousTurns() && !isObserver()) {
+		if (isSimultaneousTurns() && !isObserver() && gDLL->IsPlayerKicked(GetID())) {
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_EnableInput);
+		} else if (isSimultaneousTurns() && !isObserver()) {
 			GAMEEVENTINVOKE_HOOK(GAMEEVENT_DisableInput);
-			if (gDLL->IsPlayerKicked(GetID())) {
-				GAMEEVENTINVOKE_HOOK(GAMEEVENT_EnableInput);
-			}
 		}
 #endif
 
