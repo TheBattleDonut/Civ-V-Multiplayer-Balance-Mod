@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
     <ProjectGuid>{75199b1a-a062-42e3-8135-1d04a65958ea}</ProjectGuid>
-    <Name>Civ V Multiplayer Balance Mod V1.0</Name>
+    <Name>Civ V Multiplayer Balance Mod</Name>
     <Guid>c650741a-f328-4bcf-9085-213c073eb5de</Guid>
     <ModVersion>1</ModVersion>
     <Stability>Alpha</Stability>
@@ -11,6 +11,8 @@
     <Description>A balance mod for the Civ V Multiplayer discord server</Description>
     <Authors>TheBattleDonut</Authors>
     <SpecialThanks>
+      PersonWithHat
+      Swift1304
     </SpecialThanks>
     <AffectsSavedGames>true</AffectsSavedGames>
     <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
