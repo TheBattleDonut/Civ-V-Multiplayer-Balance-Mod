@@ -6,36 +6,43 @@
 			<Type>GAMEOPTION_AI_NO_WORLD_WONDER</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_WORLD_WONDER_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
         <Row>
 			<Type>GAMEOPTION_AI_NO_BUILDING_SETTLERS</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_BUILDING_SETTLERS_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 		<Row>
 			<Type>GAMEOPTION_AI_NO_MAKING_PROPHETS</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_MAKING_PROPHETS_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 		<Row>
 			<Type>GAMEOPTION_AI_NO_WAR_DECLARATION</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_WAR_DECLARATION</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_WAR_DECLARATION_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 		<Row>
 			<Type>GAMEOPTION_AI_NO_GOLD_GIFTS_CS</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_GOLD_GIFTS_CS_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 		<Row>
 			<Type>GAMEOPTION_AI_ONLY_LUX_TRADES</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_ONLY_LUX_TRADES_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 		<Row>
 			<Type>GAMEOPTION_AI_NO_VOTES</Type>
 			<Description>TXT_KEY_GAME_OPTION_AI_NO_VOTES</Description>
 			<Help>TXT_KEY_GAME_OPTION_AI_NO_VOTES_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
     </GameOptions>
     <Language_en_US>

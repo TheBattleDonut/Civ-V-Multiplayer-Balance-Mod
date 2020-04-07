@@ -7,6 +7,7 @@
 			<Type>GAMEOPTION_BAN_OBSERVATORY</Type>
 			<Description>TXT_KEY_GAMEOPTION_BAN_OBSERVATORY</Description>
 			<Help>TXT_KEY_GAMEOPTION_BAN_OBSERVATORY_HELP</Help>
+			<SupportsSinglePlayer>false</SupportsSinglePlayer>
 		</Row>
 	</GameOptions>
 	<Language_en_US>
