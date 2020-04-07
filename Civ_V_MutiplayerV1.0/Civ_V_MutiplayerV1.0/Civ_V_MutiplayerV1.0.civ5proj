@@ -153,6 +153,10 @@
     <Content Include="gameplay\CIV5GameOptions_Randomized_Activation.xml">
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
+    <Content Include="ui\LoadScreen.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="ui\WorldView.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>

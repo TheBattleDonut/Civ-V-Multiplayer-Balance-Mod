@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -92,6 +92,10 @@ protected:
 	static int lGetTurnYear(lua_State* L);
 	static int lGetGameTurnYear(lua_State* L);
 	static int lGetTurnString(lua_State* L);
+
+#ifdef CVM_AUTOSAVE_FIX
+	LUAAPIEXTN(GameDoneLoading, void);
+#endif
 
 	static int lGetElapsedGameTurns(lua_State* L);
 	static int lGetMaxTurns(lua_State* L);

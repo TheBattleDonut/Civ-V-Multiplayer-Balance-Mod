@@ -35,7 +35,7 @@
 // Bug Fixes
 #define CVM_CITADEL_BUG_FIX
 #define CVM_TRIPLE_BARB_SPAWN_FIX
-// #define CVM_AUTOSAVE_FIX
+#define CVM_AUTOSAVE_FIX
 
 // Policy changes
 #define CVM_LIBERTY_FINISHER_FREE_GREAT_PROPHET
@@ -62,6 +62,8 @@
 
 #define GAMEEVENT_EnableInput  "EnableInput", ""
 #define GAMEEVENT_DisableInput "DisableInput", ""
+
+#define LUAAPIEXTN(method, type, ...) static int l##method(lua_State* L)
 
 class CustomMods {
 public:

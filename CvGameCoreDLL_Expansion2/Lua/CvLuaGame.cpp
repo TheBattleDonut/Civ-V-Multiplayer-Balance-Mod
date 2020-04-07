@@ -1,5 +1,5 @@
 /*	-------------------------------------------------------------------------------------------------------
-	© 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
+	ï¿½ 1991-2012 Take-Two Interactive Software and its subsidiaries.  Developed by Firaxis Games.  
 	Sid Meier's Civilization V, Civ, Civilization, 2K Games, Firaxis Games, Take-Two Interactive Software 
 	and their respective logos are all trademarks of Take-Two interactive Software, Inc.  
 	All other marks and trademarks are the property of their respective owners.  
@@ -379,6 +379,10 @@ void CvLuaGame::RegisterMembers(lua_State* L)
 
 	Method(GetNumArchaeologySites);
 	Method(GetNumHiddenArchaeologySites);
+
+#ifdef CVM_AUTOSAVE_FIX
+	Method(GameDoneLoading);
+#endif
 }
 //------------------------------------------------------------------------------
 
@@ -2784,3 +2788,14 @@ int CvLuaGame::lGetNumHiddenArchaeologySites(lua_State* L)
 	lua_pushinteger(L, GC.getGame().GetNumHiddenArchaeologySites());
 	return 1;
 }
+
+#ifdef CVM_AUTOSAVE_FIX
+	int CvLuaGame::lGameDoneLoading(lua_State* L)
+{
+	// Fix for freezing, withotu activating uncessary players/other turn related issues!
+	// Basically, hangs since gDLL->SendAICivsProcessed(); was not sent.
+	// Can't send it any earlier than here, will just do nothing!!
+	GC.getGame().SetLastTurnAICivsProcessed();
+	return 1;
+}
+#endif
