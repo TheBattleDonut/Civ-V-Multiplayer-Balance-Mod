@@ -2790,9 +2790,9 @@ int CvLuaGame::lGetNumHiddenArchaeologySites(lua_State* L)
 }
 
 #ifdef CVM_AUTOSAVE_FIX
-	int CvLuaGame::lGameDoneLoading(lua_State* L)
+int CvLuaGame::lGameDoneLoading(lua_State* L)
 {
-	// Fix for freezing, withotu activating uncessary players/other turn related issues!
+	// Fix for freezing, without activating uncessary players/other turn related issues!
 	// Basically, hangs since gDLL->SendAICivsProcessed(); was not sent.
 	// Can't send it any earlier than here, will just do nothing!!
 	GC.getGame().SetLastTurnAICivsProcessed();

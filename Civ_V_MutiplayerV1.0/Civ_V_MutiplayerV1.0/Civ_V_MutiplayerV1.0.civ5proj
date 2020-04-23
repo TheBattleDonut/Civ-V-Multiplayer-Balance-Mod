@@ -8,7 +8,65 @@
     <ModVersion>1</ModVersion>
     <Stability>Alpha</Stability>
     <Teaser>A balance mod for the Civ V Multiplayer discord server</Teaser>
-    <Description>A balance mod for the Civ V Multiplayer discord server</Description>
+    <Description>
+A balance mod for the Civ V Multiplayer discord server.
+
+Changelist:
+
+AI:
+- ai can't make missionaries prophets etc
+- ai can't build wonders
+- ai can't make settlers
+- ai can't declare war
+- ai can't give gold gifts to city states
+- ai will only trade 1 for 1 lux deals
+- ai cannot propose or vote in the world congress/UN, votes needed to win diplomatic victory are not changed
+- ai cannot build manhatten project or nuclear missiles
+- ai cannot build apollo program or spaceship parts
+
+Mechanical:
+- shift move removed
+- Inputs during turn roll over are no longer registered
+- After declaring peace with a cs, must wait 2 turns before you can declare war again
+- Once UN is founded and votes are counted for diplomatic victory, votes are automatically made for yourself
+- Only tile improvement action possible inside a civs terrain that you are at war with is a road or chopping jungle/forest
+- When allying a cs which has a previous owner by city state quest, gold gift, spy rig or coup, you are unable to declare war on player which was previous ally for one full turn
+(equal to the duration of the turn timer at the turn the alliance change occurs)
+- unit actions now not possible while a player is dc'd but not kicked (or not green in lobby)
+- Randomized activation order (for now, better solution in future)
+- Radaring removed
+- Barb camp notifications now occur for all players
+- Automating to reset timer disabled, Host can press F7 to do the same. Affects only their timer but works in general.
+
+Removals:
+
+- Scholars in residence removed
+- Research Agreements removed
+- Atomic Bombs removed
+- Hubble Telescope removed
+- Paratroopers and Xcom can no longer get Blitz promotion
+- Remove different civ theming bonus requirment from all wonders and museums
+- Can ban observatories via a tickbox in lobby menu
+- Honor opener no longer gives barb camp notifications (passive ability anyway)
+
+Bug Fixes:
+
+- force krakatoa to spawn within 3 tiles of a large landmass if it occurs
+- fix coastal triple barb spawn bug
+- fix citadel on strategic resource tile making it unusable
+
+Policies:
+- Liberty free great prophet from finisher only increases the great prophet counter, not any other
+- Honor opener now gives culture from any unit kill, of equivalent value as if it was a barb
+- Patronage finisher, gifted great people are free and do not increase great person counter
+
+Buildings:
+- Stoneworks can be built when settled on plains
+
+Civ changes:
+- Iroquois unique ability fixed
+
+    </Description>
     <Authors>TheBattleDonut</Authors>
     <SpecialThanks>
       PersonWithHat

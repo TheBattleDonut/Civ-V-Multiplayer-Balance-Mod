@@ -9532,9 +9532,11 @@ void CvGame::Read(FDataStream& kStream)
 		}
 	}
 
+#ifndef CVM_AUTOSAVE_FIX
 	//when loading from file, we need to reset m_lastTurnAICivsProcessed 
 	//so that updateMoves() can turn active players after loading an autosave in simultaneous turns multiplayer.
 	m_lastTurnAICivsProcessed = -1;
+#endif
 }
 
 //	---------------------------------------------------------------------------
