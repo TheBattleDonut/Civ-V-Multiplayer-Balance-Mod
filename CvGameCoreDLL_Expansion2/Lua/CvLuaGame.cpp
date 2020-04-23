@@ -2792,10 +2792,26 @@ int CvLuaGame::lGetNumHiddenArchaeologySites(lua_State* L)
 #ifdef CVM_AUTOSAVE_FIX
 int CvLuaGame::lGameDoneLoading(lua_State* L)
 {
-	// Fix for freezing, without activating uncessary players/other turn related issues!
-	// Basically, hangs since gDLL->SendAICivsProcessed(); was not sent.
-	// Can't send it any earlier than here, will just do nothing!!
-	GC.getGame().SetLastTurnAICivsProcessed();
+	CvPlayer& kPlayer = GET_PLAYER(GC.getGame().getActivePlayer());
+
+	// Workaround to fix bugged DLL loading
+	// Game thinks that all players have sent 'Ready' as soon as you load (or initialize) a game, no apparent reason.
+	// Probably not saved/loaded and defaults to 'true' instead of 'false'
+
+		// Workaround to allow sendTurnUnready() in most cases, would otherwise block it here!
+		bool wasActive = kPlayer.isTurnActive();
+		if(!wasActive)
+			kPlayer.setTurnActiveForPbem(true);
+
+		int count = 0;
+		while (!gDLL->sendTurnUnready() && count < 10) {
+			count++;
+		}
+
+		if(!wasActive)
+			kPlayer.setTurnActiveForPbem(false);
+	//~ workaround
+
 	return 1;
 }
 #endif

@@ -16072,6 +16072,62 @@ bool CvPlayer::isEndTurn() const
 //	------------------------------------------------------------------------------------------------
 void CvPlayer::setEndTurn(bool bNewValue)
 {
+#ifdef CVM_AUTOSAVE_FIX
+	CvGame& kGame = GC.getGame();
+
+	if (isSimultaneousTurns()
+		&& bNewValue 
+		&& kGame.isNetworkMultiPlayer()) {
+		//When doing simultaneous turns in multiplayer, we don't want anyone to end their turn until everyone has signalled TurnAllComplete.
+		// No setting end turn to true until all the players have sent the TurnComplete network message
+		if (!gDLL->HasReceivedTurnAllCompleteFromAllPlayers()) {
+			return;
+		}
+	}
+
+	// If this is a remote player in an MP match, don't
+	// honor the end of turn request if the player still
+	// has units to run the simulation for the turn
+	if (!isEndTurn() && isHuman() && GetID() != kGame.getActivePlayer()) {
+		if (hasBusyUnitOrCity() || (!gDLL->HasReceivedTurnComplete(GetID()) && hasReadyUnit())) {
+			return;
+		}
+	} else if (!isHuman()) {
+		if (hasBusyUnitOrCity()) {
+			return;
+		}
+	}
+
+	m_bEndTurn = bNewValue;
+
+	// This check is here for the AI.  Currently, the setEndTurn(true) never seems to get called for AI players, the automoves are just set directly
+	// Why is this?  It would be great if all players were processed the same.
+	if (!isHuman() && isAutoMoves()) {
+		setAutoMoves(false);
+	}
+	else
+	if (isEndTurn()) {
+		CvAssertMsg(isTurnActive(), "isTurnActive is expected to be true");
+
+		//fully simultaneous turns only run automoves after every human has moved.
+		if (!kGame.isOption(GAMEOPTION_DYNAMIC_TURNS) && GC.getGame().isOption(GAMEOPTION_SIMULTANEOUS_TURNS))
+			checkRunAutoMovesForEveryone();
+		else
+			setAutoMoves(true);
+#ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
+		if (GetID() == kGame.getActivePlayer()) {
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_DisableInput);
+		}
+#endif
+	} else {
+		setAutoMoves(false);
+#ifdef CVM_NO_INPUT_DURING_TURN_ROLL_OVER
+		if (GetID() == kGame.getActivePlayer()) {
+			GAMEEVENTINVOKE_HOOK(GAMEEVENT_EnableInput);
+		}
+#endif
+	}
+#else
 	CvGame& game = GC.getGame();
 
 	if(isSimultaneousTurns()
@@ -16152,6 +16208,7 @@ void CvPlayer::setEndTurn(bool bNewValue)
 		if(!bNewValue && isAutoMoves())
 			setAutoMoves(false);
 	}
+#endif
 }
 
 //	---------------------------------------------------------------------------

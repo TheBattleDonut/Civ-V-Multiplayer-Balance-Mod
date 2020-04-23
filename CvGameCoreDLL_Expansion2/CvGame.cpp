@@ -7566,11 +7566,7 @@ void CvGame::doTurn()
 	int iLoopPlayer;
 	int iI;
 
-#ifdef CVM_AUTOSAVE_FIX
-	if (getAIAutoPlay() || isNetworkMultiPlayer())
-#else
 	if(getAIAutoPlay())
-#endif
 	{
 		gDLL->AutoSave(false);
 	}
@@ -7632,6 +7628,9 @@ void CvGame::doTurn()
 
 	incrementGameTurn();
 	incrementElapsedGameTurns();
+#ifdef CVM_AUTOSAVE_FIX
+	gDLL->PublishNewGameTurn(getGameTurn());
+#endif
 
 	if(isOption(GAMEOPTION_DYNAMIC_TURNS))
 	{// update turn mode for dynamic turn mode.
@@ -7732,14 +7731,13 @@ void CvGame::doTurn()
 
 	LogGameState();
 
-#ifndef CVM_AUTOSAVE_FIX
 	if(isNetworkMultiPlayer())
 	{//autosave after doing a turn
 		gDLL->AutoSave(false);
 	}
-#endif
-
+#ifndef CVM_AUTOSAVE_FIX
 	gDLL->PublishNewGameTurn(getGameTurn());
+#endif
 }
 
 //	--------------------------------------------------------------------------------
